@@ -53,6 +53,9 @@ EduSync is a comprehensive student management system designed to streamline acad
    ```bash
    # Seed the database (if first time)
    npm run seed
+
+   # Add more circulars/notices
+   npm run add-circulars
    
    # Start both server and client
    npm run dev
