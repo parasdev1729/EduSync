@@ -43,23 +43,23 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-[#020617]/80 backdrop-blur-xl border-b border-white/5 fixed w-full z-50 top-0 transition-all">
+    <nav className="glass-panel border-b border-white/10 fixed w-full z-50 top-0 transition-all rounded-b-[1.5rem]">
       <div className="px-4 py-3 lg:px-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
             {/* Unified Toggle */}
             <button 
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              className="p-2 text-slate-400 hover:text-white hover:bg-white/5 rounded-lg transition-all"
+              className="p-2 text-slate-400 hover:text-white glass-card rounded-lg transition-all"
             >
               {isSidebarOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
             
             <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20" onClick={() => navigate('/')} style={{cursor: 'pointer'}}>
-              <span className="text-white font-black text-xl italic">E</span>
+              <span className="text-white font-black text-xl italic tracking-tighter">E</span>
             </div>
             <span 
-              className="text-xl font-black tracking-tight bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent hidden sm:block cursor-pointer"
+              className="text-xl font-black tracking-tight text-white hidden sm:block cursor-pointer"
               onClick={() => navigate('/')}
             >
               EduSync
@@ -70,16 +70,16 @@ const Navbar = () => {
             <div className="relative" ref={notificationRef}>
               <button 
                 onClick={() => setShowNotifications(!showNotifications)}
-                className={`p-2 rounded-xl transition-all relative ${showNotifications ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}
+                className={`p-2 rounded-xl transition-all relative ${showNotifications ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-400 hover:text-white glass-card'}`}
               >
                 <Bell size={20} />
                 <span className="absolute top-2 right-2.5 w-2 h-2 bg-blue-500 rounded-full border-2 border-[#020617]"></span>
               </button>
 
               {showNotifications && (
-                <div className="absolute right-0 mt-3 w-80 bg-slate-900 border border-white/10 rounded-2xl shadow-2xl overflow-hidden animate-in slide-in-from-top-2 duration-200">
+                <div className="absolute right-0 mt-3 w-80 glass-panel border border-white/10 rounded-2xl shadow-2xl overflow-hidden animate-in slide-in-from-top-2 duration-200">
                   <div className="p-4 border-b border-white/5 bg-white/5 flex items-center justify-between">
-                    <h3 className="text-sm font-bold text-white uppercase tracking-widest">Notifications</h3>
+                    <h3 className="text-[10px] font-black text-white uppercase tracking-[0.2em]">Notifications</h3>
                     <span className="text-[10px] font-black text-blue-500 bg-blue-500/10 px-2 py-0.5 rounded-full">New</span>
                   </div>
                   <div className="max-h-96 overflow-y-auto">
@@ -87,11 +87,11 @@ const Navbar = () => {
                       <div 
                         key={c._id} 
                         onClick={() => handleNotificationClick(c._id)}
-                        className="p-4 border-b border-white/5 hover:bg-white/5 transition-colors cursor-pointer group"
+                        className="p-4 border-b border-white/5 hover:bg-white/10 transition-colors cursor-pointer group"
                       >
-                        <p className="text-xs font-bold text-slate-100 line-clamp-1 group-hover:text-blue-400">{c.title}</p>
-                        <p className="text-[10px] text-slate-500 mt-1 line-clamp-2">{c.description}</p>
-                        <p className="text-[9px] text-slate-600 mt-2 font-black uppercase">{new Date(c.date).toLocaleDateString()}</p>
+                        <p className="text-xs font-bold text-slate-100 line-clamp-1 group-hover:text-blue-400 tracking-tight">{c.title}</p>
+                        <p className="text-[10px] text-slate-500 mt-1 line-clamp-2 leading-relaxed">{c.description}</p>
+                        <p className="text-[9px] text-slate-600 mt-2 font-black uppercase tracking-widest">{new Date(c.date).toLocaleDateString()}</p>
                       </div>
                     ))}
                   </div>
@@ -110,7 +110,10 @@ const Navbar = () => {
                 <span className="text-sm font-bold text-slate-100 leading-none">{user?.name}</span>
                 <span className="text-[10px] font-bold text-blue-500 uppercase tracking-widest mt-1">Batch 2024</span>
               </div>
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center text-blue-400 font-bold border border-white/10 shadow-xl shrink-0">
+              <div 
+                className="w-10 h-10 rounded-xl bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center text-blue-400 font-bold border border-white/10 shadow-xl shrink-0 cursor-pointer"
+                onClick={() => navigate('/profile')}
+              >
                 {user?.name?.charAt(0) || <User size={20} />}
               </div>
               <button

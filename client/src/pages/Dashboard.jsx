@@ -136,16 +136,16 @@ const Dashboard = () => {
           <div 
             key={i} 
             onClick={item.onClick}
-            className="relative group overflow-hidden bg-slate-900/50 border border-white/5 p-6 rounded-3xl backdrop-blur-sm hover:border-white/10 transition-all cursor-pointer"
+            className="relative group overflow-hidden glass-card p-6 rounded-[2rem] hover:bg-white/[0.05] cursor-pointer"
           >
-            <div className={`absolute top-0 right-0 w-24 h-24 ${item.bg} blur-3xl -mr-8 -mt-8 rounded-full`}></div>
+            <div className={`absolute top-0 right-0 w-24 h-24 ${item.bg} blur-3xl -mr-8 -mt-8 rounded-full group-hover:scale-150 transition-transform duration-500`}></div>
             <div className="relative z-10">
               <div className={`p-3 w-fit rounded-2xl ${item.bg} ${item.col} mb-4 group-hover:scale-110 transition-transform`}>
                 <item.icon size={24} />
               </div>
-              <p className="text-slate-500 text-xs font-bold uppercase tracking-widest">{item.label}</p>
-              <h3 className="text-2xl font-black text-white mt-1 truncate">{item.val}</h3>
-              {item.sub && <p className="text-[10px] text-slate-500 mt-2 font-bold uppercase truncate">{item.sub}</p>}
+              <p className="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em]">{item.label}</p>
+              <h3 className="text-2xl font-black text-white mt-1 truncate tracking-tight">{item.val}</h3>
+              {item.sub && <p className="text-[10px] text-slate-400 mt-2 font-bold uppercase truncate opacity-70 italic">{item.sub}</p>}
             </div>
           </div>
         ))}
@@ -153,14 +153,16 @@ const Dashboard = () => {
 
       {/* Charts & Activity */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 bg-slate-900/50 border border-white/5 p-8 rounded-3xl backdrop-blur-sm">
+        <div className="lg:col-span-2 glass-panel p-8 rounded-[2.5rem]">
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-xl font-bold text-white flex items-center">
-              <TrendingUp size={20} className="mr-3 text-blue-500" />
-              Performance Analytics
+            <h2 className="text-xl font-black text-white flex items-center tracking-tight">
+              <div className="p-2 bg-blue-500/20 rounded-lg mr-3">
+                <TrendingUp size={20} className="text-blue-400" />
+              </div>
+              Analytics
             </h2>
             <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest bg-white/5 px-3 py-1 rounded-full border border-white/5">
-              Source: MST-2 Results
+              MST-2 Results
             </span>
           </div>
           <div className="h-[300px] w-full">
@@ -185,11 +187,11 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-blue-600 to-indigo-700 p-8 rounded-3xl shadow-2xl shadow-blue-900/20 flex flex-col justify-between overflow-hidden relative">
-          <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 blur-3xl -mr-10 -mt-10 rounded-full"></div>
+        <div className="glass-panel p-8 rounded-[2.5rem] shadow-2xl shadow-blue-900/20 flex flex-col justify-between overflow-hidden relative border-blue-500/20">
+          <div className="absolute top-0 right-0 w-40 h-40 bg-blue-600/10 blur-3xl -mr-10 -mt-10 rounded-full"></div>
           <div className="relative z-10">
-            <h2 className="text-2xl font-black text-white leading-tight">Quick<br/>Actions</h2>
-            <p className="text-blue-100 text-sm mt-2 font-medium opacity-80">Access frequently used features</p>
+            <h2 className="text-2xl font-black text-white leading-tight tracking-tight">Quick<br/>Actions</h2>
+            <p className="text-blue-400 text-[10px] font-black uppercase tracking-widest mt-2 opacity-80">Control Center</p>
           </div>
           
           <div className="relative z-10 space-y-3 mt-8">
@@ -201,10 +203,12 @@ const Dashboard = () => {
               <button 
                 key={idx} 
                 onClick={() => navigate(link.p)}
-                className="w-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/10 p-4 rounded-2xl flex items-center justify-between transition-all group cursor-pointer"
+                className="w-full glass-card hover:bg-white/10 p-4 rounded-2xl flex items-center justify-between group cursor-pointer border-white/5"
               >
-                <span className="text-white font-bold text-sm">{link.n}</span>
-                <ChevronRight size={18} className="text-white/50 group-hover:translate-x-1 transition-transform" />
+                <span className="text-white font-bold text-sm tracking-tight">{link.n}</span>
+                <div className="p-1 bg-white/5 rounded-lg group-hover:bg-blue-600 group-hover:text-white transition-all">
+                  <ChevronRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
+                </div>
               </button>
             ))}
           </div>

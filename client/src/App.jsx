@@ -28,9 +28,10 @@ const Layout = ({ children }) => {
         </div>
       </div>
       {/* Dynamic Background Glow */}
-      <div className="fixed top-0 left-0 -z-10 h-full w-full pointer-events-none">
-        <div className="absolute top-0 right-0 h-[500px] w-[500px] rounded-full bg-blue-600/5 blur-[120px]"></div>
-        <div className="absolute bottom-0 left-0 h-[500px] w-[500px] rounded-full bg-indigo-600/5 blur-[120px]"></div>
+      <div className="fixed top-0 left-0 -z-10 h-full w-full pointer-events-none overflow-hidden bg-[#020617]">
+        <div className="absolute top-[-10%] right-[-10%] h-[600px] w-[600px] rounded-full bg-blue-600/10 blur-[120px] animate-pulse"></div>
+        <div className="absolute bottom-[-10%] left-[-10%] h-[600px] w-[600px] rounded-full bg-indigo-600/10 blur-[120px] animate-pulse" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute top-[40%] left-[30%] h-[400px] w-[400px] rounded-full bg-blue-500/5 blur-[100px]"></div>
       </div>
     </div>
   );
