@@ -136,7 +136,7 @@ const Dashboard = () => {
           <div 
             key={i} 
             onClick={item.onClick}
-            className="relative group overflow-hidden glass-card p-6 rounded-[2rem] hover:bg-white/[0.05] cursor-pointer"
+            className="relative group overflow-hidden glass-card p-6 rounded-[2rem] hover:bg-white/[0.05] cursor-pointer active-press"
           >
             <div className={`absolute top-0 right-0 w-24 h-24 ${item.bg} blur-3xl -mr-8 -mt-8 rounded-full group-hover:scale-150 transition-transform duration-500`}></div>
             <div className="relative z-10">
@@ -203,7 +203,7 @@ const Dashboard = () => {
               <button 
                 key={idx} 
                 onClick={() => navigate(link.p)}
-                className="w-full glass-card hover:bg-white/10 p-4 rounded-2xl flex items-center justify-between group cursor-pointer border-white/5"
+                className="w-full glass-card hover:bg-white/10 p-4 rounded-2xl flex items-center justify-between group cursor-pointer border-white/5 active-press"
               >
                 <span className="text-white font-bold text-sm tracking-tight">{link.n}</span>
                 <div className="p-1 bg-white/5 rounded-lg group-hover:bg-blue-600 group-hover:text-white transition-all">

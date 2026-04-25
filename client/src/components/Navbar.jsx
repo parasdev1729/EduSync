@@ -77,7 +77,7 @@ const Navbar = () => {
               </button>
 
               {showNotifications && (
-                <div className="absolute right-0 mt-3 w-80 glass-panel border border-white/10 rounded-2xl shadow-2xl overflow-hidden animate-in slide-in-from-top-2 duration-200">
+                <div className="absolute right-0 mt-3 w-80 bg-slate-900 border border-white/10 rounded-2xl shadow-2xl overflow-hidden animate-in slide-in-from-top-2 duration-200">
                   <div className="p-4 border-b border-white/5 bg-white/5 flex items-center justify-between">
                     <h3 className="text-[10px] font-black text-white uppercase tracking-[0.2em]">Notifications</h3>
                     <span className="text-[10px] font-black text-blue-500 bg-blue-500/10 px-2 py-0.5 rounded-full">New</span>

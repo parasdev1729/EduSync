@@ -47,7 +47,7 @@ const Sidebar = () => {
                 to={item.path}
                 onClick={() => setIsSidebarOpen(false)}
                 className={({ isActive }) =>
-                  `flex items-center rounded-xl transition-all duration-200 group overflow-hidden p-3
+                  `flex items-center rounded-xl transition-all duration-300 group overflow-hidden p-3 active-press
                   ${isActive
                       ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20'
                       : 'text-slate-400 hover:text-slate-100 hover:bg-white/5'

@@ -22,7 +22,7 @@ const Layout = ({ children }) => {
           id="main-content" 
           className="relative w-full h-full overflow-y-auto bg-transparent min-h-[calc(100vh-64px)] ml-0"
         >
-          <div className="p-4 sm:p-8 max-w-7xl mx-auto w-full">
+          <div className="p-4 sm:p-8 max-w-7xl mx-auto w-full page-fade-enter">
             {children}
           </div>
         </div>
