@@ -1,0 +1,215 @@
+## 🎯 Project Overview
+
+EduSync is a university student dashboard where students can view all their academic information across sessions — including circulars, attendance, marks, personal info, timetable, and university activities. There is **no sign-up flow**; student credentials are pre-seeded into the database by the university admin.
+
+---
+
+## 🏗️ Architecture
+
+Follow strict **MVC (Model-View-Controller)** architecture on the backend:
+- **Model** → MongoDB schemas via Mongoose
+- **View** → React 19 frontend (separate from backend)
+- **Controller** → Express route handler functions (kept separate from route definitions)
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+- React 19 (Vite)
+- React Router DOM v7
+- Axios for API calls
+- Tailwind CSS v4
+
+### Backend
+- Node.js + Express.js
+- JWT (jsonwebtoken) for auth — access token + refresh token pattern
+- bcryptjs for password hashing
+- Mongoose (MongoDB ODM)
+- dotenv, cors, cookie-parser
+
+### Database
+- MongoDB (local or Atlas)
+- Credentials are **hardcoded/seeded** — no registration endpoint
+
+---
+
+## 📁 Folder Structure
+
+Generate the following structure exactly:
+
+
+EduSync/
+├── client/                          # React 19 frontend (Vite)
+│   ├── public/
+│   ├── src/
+│   │   ├── api/
+│   │   │   └── axios.js             # Axios instance with base URL + interceptors
+│   │   ├── components/
+│   │   │   ├── Navbar.jsx
+│   │   │   ├── Sidebar.jsx
+│   │   │   └── ProtectedRoute.jsx
+│   │   ├── pages/
+│   │   │   ├── Login.jsx
+│   │   │   ├── Dashboard.jsx
+│   │   │   ├── Attendance.jsx
+│   │   │   ├── Marks.jsx
+│   │   │   ├── Circulars.jsx
+│   │   │   ├── MyInfo.jsx
+│   │   │   └── Activities.jsx
+│   │   ├── context/
+│   │   │   └── AuthContext.jsx      # Auth state (token, user, login, logout)
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│   ├── index.html
+│   └── vite.config.js
+├── server/                          # Express backend
+│   ├── config/
+│   │   └── db.js                    # Mongoose connect()
+│   ├── models/
+│   │   ├── Student.js               # Student schema (credentials + profile)
+│   │   ├── Attendance.js            # Attendance per subject per session
+│   │   ├── Marks.js                 # Marks per subject per session
+│   │   ├── Circular.js              # University circulars
+│   │   └── Activity.js             # University events/activities
+│   ├── controllers/
+│   │   ├── authController.js        # login, logout, refreshToken
+│   │   ├── studentController.js     # getMyInfo
+│   │   ├── attendanceController.js  # getAttendance
+│   │   ├── marksController.js       # getMarks
+│   │   ├── circularController.js    # getCirculars
+│   │   └── activityController.js   # getActivities
+│   ├── routes/
+│   │   ├── authRoutes.js
+│   │   ├── studentRoutes.js
+│   │   ├── attendanceRoutes.js
+│   │   ├── marksRoutes.js
+│   │   ├── circularRoutes.js
+│   │   └── activityRoutes.js
+│   ├── middleware/
+│   │   └── authMiddleware.js        # verifyToken middleware (JWT check)
+│   ├── seed/
+│   │   └── seedStudents.js          # Seeds hardcoded student credentials into MongoDB
+│   ├── .env
+│   └── index.js                     # App entry — express setup, routes, DB connect
+
+---
+
+## 🔐 Authentication Flow
+
+- `POST /api/auth/login` → accepts `{ enrollmentNo, password }` → returns JWT access token (15min) + sets httpOnly refresh token cookie
+- `POST /api/auth/refresh` → reads refresh token from cookie → returns new access token
+- `POST /api/auth/logout` → clears refresh token cookie
+- All dashboard routes are protected by `authMiddleware.js` which validates the Bearer token
+- Axios interceptor on the client auto-refreshes the token on 401 response
+
+---
+
+## 🗄️ MongoDB Schemas
+
+### Student
+```js
+{
+  enrollmentNo: String (unique),  // e.g. "2310992540"
+  password: String,               // bcrypt hashed
+  name: String,
+  branch: String,
+  semester: Number,
+  section: String,
+  email: String,
+  phone: String,
+  dob: Date,
+  profilePic: String              // URL
+}
+```
+
+### Attendance
+```js
+{
+  studentId: ObjectId (ref: Student),
+  session: String,                // e.g. "2024-25 (Even)"
+  subject: String,
+  totalClasses: Number,
+  attended: Number
+}
+```
+
+### Marks
+```js
+{
+  studentId: ObjectId (ref: Student),
+  session: String,
+  subject: String,
+  examType: String,              // "MST1" | "MST2" | "EndSem"
+  marksObtained: Number,
+  maxMarks: Number
+}
+```
+
+### Circular
+```js
+{
+  title: String,
+  description: String,
+  fileUrl: String,
+  issuedBy: String,
+  date: Date
+}
+```
+
+### Activity
+```js
+{
+  title: String,
+  description: String,
+  date: Date,
+  venue: String,
+  registrationLink: String
+}
+```
+
+---
+
+## 🌱 Seed File (`seedStudents.js`)
+
+Create a seed script that:
+1. Connects to MongoDB
+2. Drops existing Student collection
+3. Inserts **2 hardcoded students** with bcrypt-hashed passwords
+4. Example credentials:
+   - enrollmentNo: `"2310992540"`, password: `"student123"`
+   - enrollmentNo: `"2310992541"`, password: `"student456"`
+5. Also seeds sample Attendance, Marks, Circulars, and Activities for both students
+
+---
+
+## 🖥️ Frontend Pages
+
+- **Login** → form with enrollmentNo + password, calls `/api/auth/login`, stores token in AuthContext
+- **Dashboard** → welcome card + quick stats (attendance %, upcoming activities, latest circular)
+- **Attendance** → session selector dropdown, table showing subject-wise attendance with % and color coding
+- **Marks** → session + exam type selector, subject-wise marks table
+- **Circulars** → list of university circulars, sorted latest first, with download link
+- **MyInfo** → student profile card (name, enrollment, branch, semester, email, phone, DOB)
+- **Activities** → upcoming/past university events list with registration links
+
+---
+
+## Sample Data
+
+student rollno / id is like '24'(batch no. i.e 2024 = 24)10099'1556'(1556 is the actual roll no of that batch)
+
+email is like paras.becse24@chitkara.edu.in (chitkara is the uni name, becse in the course 24 is the batch)
+
+---
+
+## ⚙️ Additional Requirements
+
+- All backend routes use `/api/` prefix
+- CORS configured to allow `http://localhost:5173`
+- `.env` should include: `MONGO_URI`, `JWT_SECRET`, `JWT_REFRESH_SECRET`, `PORT`
+- `vite.config.js` should proxy `/api` to `http://localhost:5000`
+- Add `README.md` with setup instructions (install, seed, run)
+- Include `package.json` scripts: `dev`, `seed`, `start` for server; `dev`, `build` for client
+
+Generate all files with complete, working code. Do not skip any file. Do not use placeholder comments like "// add logic here" — write the actual implementation.

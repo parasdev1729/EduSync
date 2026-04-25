@@ -1,0 +1,16 @@
+{
+  "name": "edusync-root",
+  "version": "1.0.0",
+  "description": "Root package to manage EduSync client and server",
+  "scripts": {
+    "install-all": "npm install && npm install --prefix server && npm install --prefix client",
+    "seed": "npm run seed --prefix server",
+    "add-circulars": "node server/seed/addCirculars.js",
+    "dev": "concurrently \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
+    "server": "npm run dev --prefix server",
+    "client": "npm run dev --prefix client"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
