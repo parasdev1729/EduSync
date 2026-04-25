@@ -38,47 +38,71 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center relative overflow-hidden font-sans selection:bg-blue-500/30 bg-[#020617]">
+    <div className="min-h-screen w-full flex flex-col md:flex-row bg-[#020617] font-sans selection:bg-blue-500/30">
       
-      {/* High-Quality University Background with dark overlay */}
-      <div className="absolute inset-0 z-0">
+      {/* LEFT SIDE: Immersive Image (Hidden on small screens) */}
+      <div className="hidden md:flex md:w-1/2 lg:w-[60%] relative overflow-hidden">
         <img 
           src={universityLanding} 
           alt="University Campus" 
-          className="w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-[#020617]/85 backdrop-blur-[4px]"></div>
+        {/* Deep Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#020617]/40 to-[#020617]"></div>
+        
+        {/* Branding on Image */}
+        <div className="relative z-10 flex flex-col justify-end p-16 w-full h-full">
+          <div className="space-y-6 max-w-xl">
+            <div className="flex items-center space-x-3 mb-8">
+              <div className="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center shadow-2xl">
+                <GraduationCap className="text-white" size={28} />
+              </div>
+              <span className="text-3xl font-black tracking-tighter text-white uppercase italic">EduSync</span>
+            </div>
+            <h2 className="text-5xl font-black text-white leading-tight tracking-tight">
+              Excellence in <br/>
+              <span className="text-blue-500">Digital Education.</span>
+            </h2>
+            <p className="text-slate-300 font-medium text-lg opacity-80">
+              Welcome to the official student portal of Chitkara University. Access your academic journey with a single click.
+            </p>
+          </div>
+        </div>
       </div>
 
-      {/* Centered Compact Card */}
-      <div className="relative z-10 w-full max-w-[440px] px-6 animate-in fade-in zoom-in-95 duration-700">
-        <div className="bg-white/[0.03] backdrop-blur-3xl border border-white/10 rounded-[2.5rem] p-8 md:p-12 shadow-[0_32px_64px_-12px_rgba(0,0,0,0.8)]">
+      {/* RIGHT SIDE: Clean Login Form */}
+      <div className="w-full md:w-1/2 lg:w-[40%] flex flex-col items-center justify-center p-8 md:p-12 lg:p-20 bg-[#020617]">
+        <div className="w-full max-w-[400px] space-y-10 animate-in fade-in slide-in-from-right-4 duration-700">
           
-          {/* Brand Header */}
-          <div className="flex flex-col items-center text-center mb-12">
-            <div className="w-16 h-16 bg-blue-600 rounded-[1.25rem] flex items-center justify-center shadow-[0_0_40px_rgba(37,99,235,0.3)] mb-6">
-              <GraduationCap className="text-white" size={32} />
+          {/* Mobile Logo (Visible only on small screens) */}
+          <div className="md:hidden flex flex-col items-center text-center mb-8">
+            <div className="w-14 h-14 bg-blue-600 rounded-2xl flex items-center justify-center mb-4">
+              <GraduationCap className="text-white" size={28} />
             </div>
-            <h1 className="text-3xl font-black tracking-tighter text-white mb-2 uppercase italic">EduSync</h1>
-            <p className="text-slate-500 font-bold text-[10px] uppercase tracking-[0.25em]">Student Portal Access</p>
+            <h1 className="text-2xl font-black text-white tracking-tighter uppercase italic">EduSync</h1>
+          </div>
+
+          <div className="space-y-3">
+            <h1 className="text-4xl font-black text-white tracking-tight">Sign In</h1>
+            <p className="text-slate-500 font-medium text-sm tracking-wide">Enter your student credentials below</p>
           </div>
 
           {error && (
-            <div className="mb-8 p-4 text-xs text-red-400 rounded-2xl bg-red-500/10 border border-red-500/20 flex items-center animate-in fade-in slide-in-from-top-1 font-bold">
-              <AlertCircle size={18} className="mr-3 shrink-0" />
+            <div className="p-4 text-xs text-red-400 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center animate-in fade-in zoom-in-95 font-bold uppercase tracking-wider">
+              <AlertCircle size={16} className="mr-3 shrink-0" />
               <span>{error}</span>
             </div>
           )}
 
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div className="space-y-2">
-              <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] ml-2">
+              <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] ml-1">
                 Enrollment Number
               </label>
               <input
                 type="text"
-                placeholder="241099XXXX"
-                className="w-full bg-white/[0.04] border border-white/10 rounded-2xl px-6 py-4 text-white placeholder-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/40 transition-all font-bold tracking-tight text-lg"
+                placeholder="e.g. 241099XXXX"
+                className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-5 py-4 text-white placeholder-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/40 transition-all font-bold tracking-tight text-base"
                 value={enrollmentNo}
                 onChange={(e) => setEnrollmentNo(e.target.value)}
                 required
@@ -86,13 +110,13 @@ const Login = () => {
             </div>
 
             <div className="space-y-2">
-              <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] ml-2">
-                Portal Password
+              <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] ml-1">
+                Password
               </label>
               <input
                 type="password"
                 placeholder="••••••••"
-                className="w-full bg-white/[0.04] border border-white/10 rounded-2xl px-6 py-4 text-white placeholder-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/40 transition-all font-bold tracking-tight text-lg"
+                className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-5 py-4 text-white placeholder-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/40 transition-all font-bold tracking-tight text-base"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -102,31 +126,27 @@ const Login = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-blue-600 hover:bg-blue-500 text-white font-black py-5 rounded-2xl transition-all shadow-[0_15px_30px_-5px_rgba(37,99,235,0.4)] flex items-center justify-center disabled:opacity-50 group active:scale-[0.98] uppercase tracking-widest text-xs mt-4"
+              className="w-full bg-blue-600 hover:bg-blue-500 text-white font-black py-4.5 rounded-xl transition-all shadow-[0_15px_30px_-5px_rgba(37,99,235,0.4)] flex items-center justify-center disabled:opacity-50 group active:scale-[0.98] uppercase tracking-widest text-xs mt-2"
             >
               {isLoading ? (
                 <Loader2 size={20} className="animate-spin" />
               ) : (
                 <>
-                  <span>Sign In</span>
+                  <span>Access Dashboard</span>
                   <LogIn size={18} className="ml-2 group-hover:translate-x-1 transition-transform" />
                 </>
               )}
             </button>
           </form>
 
-          {/* Minimal Footer */}
-          <div className="mt-12 text-center">
-            <p className="text-[9px] font-black text-slate-600 uppercase tracking-[0.3em]">
-              Chitkara University • Batch 2024-28
-            </p>
+          {/* Footer Branding */}
+          <div className="pt-10 border-t border-white/5 flex flex-col space-y-1">
+            <span className="text-[9px] font-black text-slate-600 uppercase tracking-[0.3em]">Institutional Access</span>
+            <p className="text-xs font-bold text-slate-400">Chitkara University, Punjab</p>
           </div>
         </div>
       </div>
-      
-      {/* Soft Ambient Glows */}
-      <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none"></div>
-      <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-[120px] pointer-events-none"></div>
+
     </div>
   );
 };
