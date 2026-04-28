@@ -1,17 +1,65 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { Users, ClipboardList, ShieldCheck, Loader2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import api from '../../api/axios';
 
 const AdminDashboard = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [stats, setStats] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const response = await api.get('/users/stats');
+        setStats(response.data);
+      } catch (error) {
+        console.error('Error fetching admin stats:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStats();
+  }, []);
 
   const adminStats = [
-    { label: 'Total Users', val: '1,240', icon: Users, col: 'text-blue-400', bg: 'bg-blue-500/10', path: '/admin/users' },
-    { label: 'Pending Requests', val: '12', icon: ClipboardList, col: 'text-amber-400', bg: 'bg-amber-500/10', path: '/admin/requests' },
-    { label: 'System Health', val: 'Optimal', icon: ShieldCheck, col: 'text-emerald-400', bg: 'bg-emerald-500/10', path: '/' },
+    { 
+      label: 'Total Users', 
+      val: stats?.totalUsers || '0', 
+      icon: Users, 
+      col: 'text-blue-400', 
+      bg: 'bg-blue-500/10', 
+      path: '/admin/users' 
+    },
+    { 
+      label: 'Pending Requests', 
+      val: stats?.pendingRequests || '0', 
+      icon: ClipboardList, 
+      col: 'text-amber-400', 
+      bg: 'bg-amber-500/10', 
+      path: '/admin/requests' 
+    },
+    { 
+      label: 'System Health', 
+      val: stats?.systemHealth || 'Optimal', 
+      icon: ShieldCheck, 
+      col: 'text-emerald-400', 
+      bg: 'bg-emerald-500/10', 
+      path: '/' 
+    },
   ];
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[60vh] space-y-4">
+        <Loader2 className="animate-spin text-blue-500" size={48} />
+        <p className="text-slate-400 font-bold animate-pulse">Initializing Control Center...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8 animate-in fade-in duration-700">
@@ -45,10 +93,16 @@ const AdminDashboard = () => {
 
       <div className="glass-panel p-8 rounded-[2.5rem]">
         <h2 className="text-xl font-black text-white mb-4 tracking-tight">System Overview</h2>
-        <p className="text-slate-400 font-medium">
-          This is the administrative dashboard where you can manage users, approve requests, and monitor system activities. 
-          Use the sidebar or the quick links above to navigate.
-        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="p-4 rounded-3xl bg-white/[0.02] border border-white/5">
+                <p className="text-slate-500 text-xs font-black uppercase mb-1">Students</p>
+                <p className="text-2xl font-black text-white">{stats?.totalStudents || 0}</p>
+            </div>
+            <div className="p-4 rounded-3xl bg-white/[0.02] border border-white/5">
+                <p className="text-slate-500 text-xs font-black uppercase mb-1">Teachers</p>
+                <p className="text-2xl font-black text-white">{stats?.totalTeachers || 0}</p>
+            </div>
+        </div>
       </div>
     </div>
   );

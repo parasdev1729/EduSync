@@ -12,6 +12,7 @@ const marksRoutes = require('./routes/marksRoutes');
 const circularRoutes = require('./routes/circularRoutes');
 const activityRoutes = require('./routes/activityRoutes');
 const requestRoutes = require('./routes/requestRoutes');
+const userRoutes = require('./routes/userRoutes');
 const socketHandler = require('./socket/socketHandler');
 
 // Load environment variables
@@ -53,6 +54,7 @@ const startServer = async () => {
     app.use('/api/circulars', circularRoutes);
     app.use('/api/activities', activityRoutes);
     app.use('/api/requests', requestRoutes);
+    app.use('/api/users', userRoutes);
 
     // Basic Route
     app.get('/', (req, res) => {
