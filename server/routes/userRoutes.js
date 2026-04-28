@@ -4,6 +4,6 @@ const { getStats, getUsers } = require('../controllers/userController');
 const { verifyToken, authorize } = require('../middleware/authMiddleware');
 
 router.get('/stats', verifyToken, authorize('admin'), getStats);
-router.get('/', verifyToken, authorize('admin'), getUsers);
+router.get('/', verifyToken, authorize('admin', 'teacher'), getUsers);
 
 module.exports = router;

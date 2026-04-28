@@ -12,6 +12,10 @@ import Activities from './pages/Activities';
 import MyInfo from './pages/MyInfo';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import TeacherDashboard from './pages/teacher/TeacherDashboard';
+import UserManagement from './pages/admin/UserManagement';
+import ApprovalRequests from './pages/admin/ApprovalRequests';
+import RequestCircular from './pages/teacher/RequestCircular';
+import TeacherAttendance from './pages/teacher/TeacherAttendance';
 import useSocket from './hooks/useSocket';
 
 // Layout component to wrap protected content
@@ -68,16 +72,12 @@ function AppRoutes() {
           </ProtectedRoute>
         } 
       />
-      {/* Role specific placeholder routes */}
       <Route 
         path="/admin/users" 
         element={
           <ProtectedRoute>
             <Layout>
-              <div className="glass-panel p-8 rounded-[2.5rem]">
-                <h2 className="text-2xl font-black text-white mb-4">User Management</h2>
-                <p className="text-slate-400">Coming soon: Admin user management interface.</p>
-              </div>
+              <UserManagement />
             </Layout>
           </ProtectedRoute>
         } 
@@ -87,10 +87,7 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <Layout>
-              <div className="glass-panel p-8 rounded-[2.5rem]">
-                <h2 className="text-2xl font-black text-white mb-4">Approval Requests</h2>
-                <p className="text-slate-400">Coming soon: Teacher circular requests approval interface.</p>
-              </div>
+              <ApprovalRequests />
             </Layout>
           </ProtectedRoute>
         } 
@@ -100,10 +97,7 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <Layout>
-              <div className="glass-panel p-8 rounded-[2.5rem]">
-                <h2 className="text-2xl font-black text-white mb-4">Request Circular</h2>
-                <p className="text-slate-400">Coming soon: Teacher circular request form.</p>
-              </div>
+              <RequestCircular />
             </Layout>
           </ProtectedRoute>
         } 
@@ -113,7 +107,7 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <Layout>
-              <Attendance />
+              {user?.role === 'teacher' ? <TeacherAttendance /> : <Attendance />}
             </Layout>
           </ProtectedRoute>
         } 
