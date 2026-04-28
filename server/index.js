@@ -1,4 +1,6 @@
 const express = require('express');
+const http = require('http');
+const { Server } = require('socket.io');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
@@ -9,6 +11,8 @@ const attendanceRoutes = require('./routes/attendanceRoutes');
 const marksRoutes = require('./routes/marksRoutes');
 const circularRoutes = require('./routes/circularRoutes');
 const activityRoutes = require('./routes/activityRoutes');
+const requestRoutes = require('./routes/requestRoutes');
+const socketHandler = require('./socket/socketHandler');
 
 // Load environment variables
 dotenv.config();
@@ -19,6 +23,19 @@ const startServer = async () => {
     await connectDB();
     
     const app = express();
+    const server = http.createServer(app);
+    const io = new Server(server, {
+      cors: {
+        origin: process.env.CLIENT_URL || 'http://localhost:5173',
+        credentials: true
+      }
+    });
+
+    // Make io available to controllers
+    app.set('io', io);
+
+    // Initialize Socket Handler
+    socketHandler(io);
 
     // Middleware
     app.use(express.json());
@@ -35,6 +52,7 @@ const startServer = async () => {
     app.use('/api/marks', marksRoutes);
     app.use('/api/circulars', circularRoutes);
     app.use('/api/activities', activityRoutes);
+    app.use('/api/requests', requestRoutes);
 
     // Basic Route
     app.get('/', (req, res) => {
@@ -43,7 +61,7 @@ const startServer = async () => {
 
     const PORT = process.env.PORT || 5000;
 
-    app.listen(PORT, () => {
+    server.listen(PORT, () => {
       console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
     });
   } catch (error) {

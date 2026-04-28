@@ -1,6 +1,6 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
-const Student = require('../models/Student');
+const User = require('../models/User');
 const Attendance = require('../models/Attendance');
 const Marks = require('../models/Marks');
 const Circular = require('../models/Circular');
@@ -12,7 +12,7 @@ const seedData = async () => {
         await connectDB();
 
         // Drop existing collections
-        await Student.deleteMany();
+        await User.deleteMany();
         await Attendance.deleteMany();
         await Marks.deleteMany();
         await Circular.deleteMany();
@@ -20,34 +20,34 @@ const seedData = async () => {
 
         console.log('Collections cleared');
 
-        // Create Students
-        const studentsData = [
+        // Create Users (Students)
+        const usersData = [
             {
-                enrollmentNo: "2410991556",
+                userId: "2410991556",
                 password: "student123",
                 email: "paras1556.becse24@chitkara.edu.in",
                 name: "Paras Rana",
+                role: "student",
                 branch: "CSE",
                 semester: 4,
                 section: "CS-A",
-                phone: "9876543210",
-                dob: new Date("2006-04-01")
+                phone: "9876543210"
             },
             {
-                enrollmentNo: "2410991557",
+                userId: "2410991557",
                 password: "student456",
                 email: "student1557.becse24@chitkara.edu.in",
                 name: "John Doe",
+                role: "student",
                 branch: "CSE",
                 semester: 4,
                 section: "CS-B",
-                phone: "0987654321",
-                dob: new Date("2006-05-15")
+                phone: "0987654321"
             }
         ];
 
-        const students = await Student.create(studentsData);
-        console.log('Students seeded');
+        const students = await User.create(usersData);
+        console.log('Users (Students) seeded');
 
         const subjects = [
             { name: "Data Structures", credits: 4 },

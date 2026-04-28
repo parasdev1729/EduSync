@@ -10,9 +10,14 @@ import Marks from './pages/Marks';
 import Circulars from './pages/Circulars';
 import Activities from './pages/Activities';
 import MyInfo from './pages/MyInfo';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import TeacherDashboard from './pages/teacher/TeacherDashboard';
+import useSocket from './hooks/useSocket';
 
 // Layout component to wrap protected content
 const Layout = ({ children }) => {
+  useSocket(); // Initialize socket connection
+  
   return (
     <div className="bg-[#020617] min-h-screen text-slate-200 selection:bg-blue-500/30 font-sans antialiased flex flex-col">
       <Navbar />
@@ -38,7 +43,7 @@ const Layout = ({ children }) => {
 };
 
 function AppRoutes() {
-  const { loading } = useAuth();
+  const { loading, user } = useAuth();
 
   if (loading) {
     return (
@@ -56,7 +61,49 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <Layout>
-              <Dashboard />
+              {user?.role === 'admin' ? <AdminDashboard /> : 
+               user?.role === 'teacher' ? <TeacherDashboard /> : 
+               <Dashboard />}
+            </Layout>
+          </ProtectedRoute>
+        } 
+      />
+      {/* Role specific placeholder routes */}
+      <Route 
+        path="/admin/users" 
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <div className="glass-panel p-8 rounded-[2.5rem]">
+                <h2 className="text-2xl font-black text-white mb-4">User Management</h2>
+                <p className="text-slate-400">Coming soon: Admin user management interface.</p>
+              </div>
+            </Layout>
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/admin/requests" 
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <div className="glass-panel p-8 rounded-[2.5rem]">
+                <h2 className="text-2xl font-black text-white mb-4">Approval Requests</h2>
+                <p className="text-slate-400">Coming soon: Teacher circular requests approval interface.</p>
+              </div>
+            </Layout>
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/teacher/request-circular" 
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <div className="glass-panel p-8 rounded-[2.5rem]">
+                <h2 className="text-2xl font-black text-white mb-4">Request Circular</h2>
+                <p className="text-slate-400">Coming soon: Teacher circular request form.</p>
+              </div>
             </Layout>
           </ProtectedRoute>
         } 

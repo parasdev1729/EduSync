@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const Student = require('../models/Student');
+const User = require('../models/User');
 
 // Generate Tokens
 const generateAccessToken = (id) => {
@@ -14,14 +14,19 @@ const generateRefreshToken = (id) => {
 // @route   POST /api/auth/login
 // @access  Public
 const login = async (req, res) => {
-    const { enrollmentNo, password } = req.body;
+    const { userId, password, role } = req.body;
 
     try {
-        const student = await Student.findOne({ enrollmentNo });
+        const user = await User.findOne({ userId });
 
-        if (student && (await student.matchPassword(password))) {
-            const accessToken = generateAccessToken(student._id);
-            const refreshToken = generateRefreshToken(student._id);
+        if (user && (await user.matchPassword(password))) {
+            // Check if role matches
+            if (role && user.role !== role) {
+                return res.status(401).json({ message: 'Unauthorized role' });
+            }
+
+            const accessToken = generateAccessToken(user._id);
+            const refreshToken = generateRefreshToken(user._id);
 
             res.cookie('refreshToken', refreshToken, {
                 httpOnly: true,
@@ -33,15 +38,14 @@ const login = async (req, res) => {
             res.json({
                 accessToken,
                 user: {
-                    id: student._id,
-                    name: student.name,
-                    enrollmentNo: student.enrollmentNo,
-                    branch: student.branch,
-                    semester: student.semester
+                    id: user._id,
+                    name: user.name,
+                    userId: user.userId,
+                    role: user.role
                 }
             });
         } else {
-            res.status(401).json({ message: 'Invalid enrollment number or password' });
+            res.status(401).json({ message: 'Invalid user ID or password' });
         }
     } catch (error) {
         console.error(error);

@@ -1,15 +1,15 @@
-const Student = require('../models/Student');
+const User = require('../models/User');
 
 // @desc    Get logged in student info
 // @route   GET /api/student/me
 // @access  Private
 const getMyInfo = async (req, res) => {
     try {
-        const student = await Student.findById(req.user.id).select('-password');
-        if (!student) {
-            return res.status(404).json({ message: 'Student not found' });
+        const user = await User.findById(req.user.id).select('-password');
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
         }
-        res.status(200).json(student);
+        res.status(200).json(user);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Server error' });

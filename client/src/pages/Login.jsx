@@ -5,8 +5,9 @@ import { LogIn, AlertCircle, Loader2, GraduationCap } from 'lucide-react';
 import universityLanding from '../assets/university_landing.jpg';
 
 const Login = () => {
-  const [enrollmentNo, setEnrollmentNo] = useState('');
+  const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
+  const [role, setRole] = useState('student');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   
@@ -21,21 +22,27 @@ const Login = () => {
     setError('');
     setIsLoading(true);
 
-    if (!enrollmentNo || !password) {
+    if (!userId || !password || !role) {
       setError('Please fill in all fields');
       setIsLoading(false);
       return;
     }
 
-    const result = await login(enrollmentNo, password);
+    const result = await login(userId, password, role);
     
     if (result.success) {
       navigate(from, { replace: true });
     } else {
-      setError(result.message || 'Invalid enrollment number or password');
+      setError(result.message || 'Invalid credentials or role');
     }
     setIsLoading(false);
   };
+
+  const roles = [
+    { id: 'student', label: 'Student' },
+    { id: 'teacher', label: 'Teacher' },
+    { id: 'admin', label: 'Admin' }
+  ];
 
   return (
     <div className="min-h-screen w-full flex flex-col md:flex-row bg-[#020617] font-sans selection:bg-blue-500/30">
@@ -64,7 +71,7 @@ const Login = () => {
               <span className="text-blue-500">Digital Education.</span>
             </h2>
             <p className="text-slate-300 font-medium text-lg opacity-80">
-              Welcome to the official student portal of Chitkara University. Access your academic journey with a single click.
+              Welcome to the official EduSync portal. Select your role and sign in to access your dashboard.
             </p>
           </div>
         </div>
@@ -84,7 +91,7 @@ const Login = () => {
 
           <div className="space-y-3">
             <h1 className="text-4xl font-black text-white tracking-tight">Sign In</h1>
-            <p className="text-slate-500 font-medium text-sm tracking-wide">Enter your student credentials below</p>
+            <p className="text-slate-500 font-medium text-sm tracking-wide">Enter your credentials below</p>
           </div>
 
           {error && (
@@ -95,16 +102,39 @@ const Login = () => {
           )}
 
           <form className="space-y-6" onSubmit={handleSubmit}>
+            {/* Role Selector */}
             <div className="space-y-2">
               <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] ml-1">
-                Enrollment Number
+                Access Level
+              </label>
+              <div className="grid grid-cols-3 gap-2">
+                {roles.map((r) => (
+                  <button
+                    key={r.id}
+                    type="button"
+                    onClick={() => setRole(r.id)}
+                    className={`py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all border ${
+                      role === r.id 
+                        ? 'bg-blue-600 border-blue-600 text-white shadow-lg shadow-blue-600/20' 
+                        : 'bg-white/[0.03] border-white/10 text-slate-500 hover:text-slate-300 hover:border-white/20'
+                    }`}
+                  >
+                    {r.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] ml-1">
+                User ID / ID Number
               </label>
               <input
                 type="text"
-                placeholder="e.g. 241099XXXX"
+                placeholder="Enter your ID"
                 className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-5 py-4 text-white placeholder-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/40 transition-all font-bold tracking-tight text-base"
-                value={enrollmentNo}
-                onChange={(e) => setEnrollmentNo(e.target.value)}
+                value={userId}
+                onChange={(e) => setUserId(e.target.value)}
                 required
               />
             </div>
@@ -132,7 +162,7 @@ const Login = () => {
                 <Loader2 size={20} className="animate-spin" />
               ) : (
                 <>
-                  <span>Access Dashboard</span>
+                  <span>Access Portal</span>
                   <LogIn size={18} className="ml-2 group-hover:translate-x-1 transition-transform" />
                 </>
               )}

@@ -7,21 +7,48 @@ import {
   GraduationCap, 
   Bell, 
   Calendar, 
-  UserCircle
+  UserCircle,
+  Users,
+  ClipboardList,
+  FilePlus
 } from 'lucide-react';
 
 const Sidebar = () => {
   const { user, isSidebarOpen, setIsSidebarOpen } = useAuth();
   
-  const menuItems = [
-    { name: 'Dashboard', icon: <LayoutDashboard size={22} />, path: '/' },
-    { name: 'Attendance', icon: <ClipboardCheck size={22} />, path: '/attendance' },
-    { name: 'Marks', icon: <GraduationCap size={22} />, path: '/marks' },
-    { name: 'Circulars', icon: <Bell size={22} />, path: '/circulars' },
-    { name: 'Activities', icon: <Calendar size={22} />, path: '/activities' },
-    { name: 'My Info', icon: <UserCircle size={22} />, path: '/profile' },
-  ];
+  const getMenuItems = () => {
+    const commonItems = [
+      { name: 'Dashboard', icon: <LayoutDashboard size={22} />, path: '/' },
+    ];
 
+    if (user?.role === 'admin') {
+      return [
+        ...commonItems,
+        { name: 'User Management', icon: <Users size={22} />, path: '/admin/users' },
+        { name: 'Approval Requests', icon: <ClipboardList size={22} />, path: '/admin/requests' },
+      ];
+    }
+
+    if (user?.role === 'teacher') {
+      return [
+        ...commonItems,
+        { name: 'Attendance', icon: <ClipboardCheck size={22} />, path: '/attendance' },
+        { name: 'Request Circular', icon: <FilePlus size={22} />, path: '/teacher/request-circular' },
+      ];
+    }
+
+    // Default: Student
+    return [
+      ...commonItems,
+      { name: 'Attendance', icon: <ClipboardCheck size={22} />, path: '/attendance' },
+      { name: 'Marks', icon: <GraduationCap size={22} />, path: '/marks' },
+      { name: 'Circulars', icon: <Bell size={22} />, path: '/circulars' },
+      { name: 'Activities', icon: <Calendar size={22} />, path: '/activities' },
+      { name: 'My Info', icon: <UserCircle size={22} />, path: '/profile' },
+    ];
+  };
+
+  const menuItems = getMenuItems();
   const progressPercent = user?.semester ? (user.semester / 8) * 100 : 0;
 
   return (

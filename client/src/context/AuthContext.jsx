@@ -18,9 +18,9 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem('sidebarOpen', isSidebarOpen);
   }, [isSidebarOpen]);
 
-  const login = async (enrollmentNo, password) => {
+  const login = async (userId, password, role) => {
     try {
-      const response = await api.post('/auth/login', { enrollmentNo, password });
+      const response = await api.post('/auth/login', { userId, password, role });
       const { accessToken, user: userData } = response.data;
       setToken(accessToken);
       setUser(userData);
