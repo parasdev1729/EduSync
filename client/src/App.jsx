@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { SocketProvider } from './context/SocketContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
@@ -16,12 +17,9 @@ import UserManagement from './pages/admin/UserManagement';
 import ApprovalRequests from './pages/admin/ApprovalRequests';
 import RequestCircular from './pages/teacher/RequestCircular';
 import TeacherAttendance from './pages/teacher/TeacherAttendance';
-import useSocket from './hooks/useSocket';
 
 // Layout component to wrap protected content
 const Layout = ({ children }) => {
-  useSocket(); // Initialize socket connection
-  
   return (
     <div className="bg-[#020617] min-h-screen text-slate-200 selection:bg-blue-500/30 font-sans antialiased flex flex-col">
       <Navbar />
@@ -160,9 +158,11 @@ function AppRoutes() {
 function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
-        <AppRoutes />
-      </BrowserRouter>
+      <SocketProvider>
+        <BrowserRouter>
+          <AppRoutes />
+        </BrowserRouter>
+      </SocketProvider>
     </AuthProvider>
   );
 }

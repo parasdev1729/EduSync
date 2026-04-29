@@ -1,29 +1,40 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { Users, ClipboardList, ShieldCheck, Loader2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../api/axios';
+import useSocket from '../../hooks/useSocket';
 
 const AdminDashboard = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const socket = useSocket();
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        const response = await api.get('/users/stats');
-        setStats(response.data);
-      } catch (error) {
-        console.error('Error fetching admin stats:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchStats();
+  const fetchStats = useCallback(async () => {
+    try {
+      const response = await api.get('/users/stats');
+      setStats(response.data);
+    } catch (error) {
+      console.error('Error fetching admin stats:', error);
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    fetchStats();
+  }, [fetchStats]);
+
+  useEffect(() => {
+    if (socket) {
+      socket.on('new_request', fetchStats);
+      return () => {
+        socket.off('new_request', fetchStats);
+      };
+    }
+  }, [socket, fetchStats]);
 
   const adminStats = [
     { 

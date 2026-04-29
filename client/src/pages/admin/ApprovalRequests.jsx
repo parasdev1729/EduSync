@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Loader2, ClipboardList, CheckCircle, XCircle } from 'lucide-react';
 import api from '../../api/axios';
+import useSocket from '../../hooks/useSocket';
 
 const ApprovalRequests = () => {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [processingId, setProcessingId] = useState(null);
+  const socket = useSocket();
 
-  const fetchRequests = async () => {
+  const fetchRequests = useCallback(async () => {
     try {
       const response = await api.get('/requests?status=pending');
       setRequests(response.data);
@@ -16,11 +18,20 @@ const ApprovalRequests = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchRequests();
-  }, []);
+  }, [fetchRequests]);
+
+  useEffect(() => {
+    if (socket) {
+      socket.on('new_request', fetchRequests);
+      return () => {
+        socket.off('new_request', fetchRequests);
+      };
+    }
+  }, [socket, fetchRequests]);
 
   const handleAction = async (id, status) => {
     setProcessingId(id);
