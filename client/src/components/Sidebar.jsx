@@ -98,19 +98,21 @@ const Sidebar = () => {
             ))}
           </nav>
           
-          <div className="mt-auto p-4 rounded-2xl bg-gradient-to-br from-slate-900 to-[#020617] border border-white/5 shadow-2xl">
-            <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">University</p>
-            <p className="text-xs font-bold text-slate-300">Chitkara University</p>
-            <div className="mt-4 w-full h-1 bg-slate-800 rounded-full overflow-hidden">
-              <div 
-                className="h-full bg-blue-500 rounded-full transition-all duration-1000" 
-                style={{ width: `${progressPercent}%` }}
-              ></div>
+          {user?.role === 'student' && (
+            <div className="mt-auto p-4 rounded-2xl bg-gradient-to-br from-slate-900 to-[#020617] border border-white/5 shadow-2xl">
+              <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">University</p>
+              <p className="text-xs font-bold text-slate-300">Chitkara University</p>
+              <div className="mt-4 w-full h-1 bg-slate-800 rounded-full overflow-hidden">
+                <div 
+                  className="h-full bg-blue-500 rounded-full transition-all duration-1000" 
+                  style={{ width: `${progressPercent}%` }}
+                ></div>
+              </div>
+              <p className="text-[10px] text-slate-500 mt-2 font-bold uppercase">
+                Progress: {Math.round(progressPercent)}%
+              </p>
             </div>
-            <p className="text-[10px] text-slate-500 mt-2 font-bold uppercase">
-              Progress: {Math.round(progressPercent)}%
-            </p>
-          </div>
+          )}
         </div>
       </aside>
     </>
