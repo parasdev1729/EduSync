@@ -33,7 +33,14 @@ const userSchema = new mongoose.Schema({
         type: String, 
         default: '' 
     },
+    dob: {
+        type: Date
+    },
     // Student specific
+    enrollmentNo: {
+        type: String,
+        required: function() { return this.role === 'student'; }
+    },
     branch: { 
         type: String, 
         required: function() { return this.role === 'student'; } 
