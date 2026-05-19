@@ -11,6 +11,7 @@ import Marks from './pages/Marks';
 import Circulars from './pages/Circulars';
 import Activities from './pages/Activities';
 import MyInfo from './pages/MyInfo';
+import Schedule from './pages/Schedule';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import TeacherDashboard from './pages/teacher/TeacherDashboard';
 import UserManagement from './pages/admin/UserManagement';
@@ -106,6 +107,16 @@ function AppRoutes() {
           <ProtectedRoute>
             <Layout>
               {user?.role === 'teacher' ? <TeacherAttendance /> : <Attendance />}
+            </Layout>
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/schedule" 
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <Schedule />
             </Layout>
           </ProtectedRoute>
         } 
