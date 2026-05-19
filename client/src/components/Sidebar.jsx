@@ -40,6 +40,7 @@ const Sidebar = () => {
     // Default: Student
     return [
       ...commonItems,
+      { name: 'Schedule', icon: <Calendar size={22} />, path: '/schedule' },
       { name: 'Attendance', icon: <ClipboardCheck size={22} />, path: '/attendance' },
       { name: 'Marks', icon: <GraduationCap size={22} />, path: '/marks' },
       { name: 'Circulars', icon: <Bell size={22} />, path: '/circulars' },
