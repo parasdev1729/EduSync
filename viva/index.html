@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduSync - Viva Prep Portal</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts (Inter) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #020617;
+      font-family: 'Inter', sans-serif;
+    }
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.02);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.01);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .glass-card:hover {
+      border-color: rgba(59, 130, 246, 0.2);
+      background: rgba(255, 255, 255, 0.02);
+    }
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+  </style>
+</head>
+<body class="text-slate-100 min-h-screen relative overflow-x-hidden selection:bg-blue-500/30">
+
+  <!-- Background Glows -->
+  <div class="absolute top-[-10%] right-[-10%] h-[600px] w-[600px] rounded-full bg-blue-600/10 blur-[130px] pointer-events-none z-0"></div>
+  <div class="absolute bottom-[-10%] left-[-10%] h-[600px] w-[600px] rounded-full bg-indigo-600/10 blur-[130px] pointer-events-none z-0"></div>
+  <div class="absolute top-[40%] left-[20%] h-[400px] w-[400px] rounded-full bg-blue-500/5 blur-[100px] pointer-events-none z-0"></div>
+
+  <!-- Main Container -->
+  <div class="max-w-7xl mx-auto p-4 sm:p-8 relative z-10">
+    
+    <!-- Top Header -->
+    <header class="flex flex-col md:flex-row md:items-center justify-between border-b border-white/10 pb-6 mb-8 gap-4">
+      <div>
+        <div class="flex items-center gap-2 mb-2 flex-wrap">
+          <span class="bg-blue-500/15 text-blue-400 text-xs px-2.5 py-1 rounded-full border border-blue-500/20 font-medium flex items-center gap-1">
+            <svg class="w-3.5 h-3.5 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+            EduSync Vercel Deployment
+          </span>
+          <span class="bg-emerald-500/15 text-emerald-400 text-xs px-2.5 py-1 rounded-full border border-emerald-500/20 font-medium">
+            100 Advanced MERN Qs
+          </span>
+          <span class="bg-indigo-500/15 text-indigo-400 text-xs px-2.5 py-1 rounded-full border border-indigo-500/20 font-medium">
+            Vercel-Ready
+          </span>
+        </div>
+        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-blue-400 via-indigo-200 to-white bg-clip-text text-transparent">
+          EduSync Project Viva Prep Dashboard
+        </h1>
+        <p class="text-slate-400 mt-2 text-sm max-w-2xl">
+          Designed specifically for Paras to master full-stack concepts, HTTP request structures, MongoDB, React contexts, security mechanisms, and Socket.IO.
+        </p>
+      </div>
+      
+      <!-- Stats Box -->
+      <div class="glass-panel p-4 rounded-xl flex items-center gap-4 border border-white/5">
+        <div class="bg-blue-500/10 p-3 rounded-lg border border-blue-500/20 text-blue-400">
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+        <div>
+          <p class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Mastery Score</p>
+          <div class="flex items-baseline gap-1 mt-0.5">
+            <span id="mastered-count" class="text-2xl font-bold text-white">0</span>
+            <span class="text-xs text-slate-400">/ <span class="total-q-count">100</span> Mastered</span>
+          </div>
+          <div class="w-28 bg-white/10 h-1.5 rounded-full overflow-hidden mt-1.5">
+            <div id="mastery-progress" class="bg-gradient-to-r from-blue-500 to-indigo-500 h-full transition-all duration-500" style="width: 0%"></div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Tab Buttons -->
+    <nav class="flex flex-wrap gap-2 border-b border-white/5 pb-4 mb-6" id="navigation-tabs">
+      <button onclick="switchTab('study-guide')" id="btn-study-guide" class="tab-btn flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 cursor-pointer bg-blue-600/20 text-blue-400 border border-blue-500/30">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+        Consolidated Study Guide
+      </button>
+      <button onclick="switchTab('code-structure')" id="btn-code-structure" class="tab-btn flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 cursor-pointer text-slate-400 hover:text-slate-200 hover:bg-white/5 border border-transparent">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+        Project Code Structure
+      </button>
+      <button onclick="switchTab('visual-flow')" id="btn-visual-flow" class="tab-btn flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 cursor-pointer text-slate-400 hover:text-slate-200 hover:bg-white/5 border border-transparent">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 8H17m0 0V4m0 4h.582"/></svg>
+        Visual Architecture Flows
+      </button>
+      <button onclick="switchTab('simulator')" id="btn-simulator" class="tab-btn flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 cursor-pointer text-slate-400 hover:text-slate-200 hover:bg-white/5 border border-transparent">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+        Mock Viva Simulator
+      </button>
+      <button onclick="switchTab('cheatsheet')" id="btn-cheatsheet" class="tab-btn flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 cursor-pointer text-slate-400 hover:text-slate-200 hover:bg-white/5 border border-transparent">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        Cheatsheet Glossary
+      </button>
+    </nav>
+
+    <!-- TAB 1: CONSOLIDATED STUDY GUIDE -->
+    <section id="tab-content-study-guide" class="tab-content space-y-6">
+      
+      <!-- Comparison grids -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="glass-panel p-5 rounded-2xl border border-white/5 space-y-3">
+          <h3 class="text-sm font-bold text-white flex items-center gap-2 border-b border-white/5 pb-2">
+            <svg class="w-4 h-4 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+            Hashing vs Encryption
+          </h3>
+          <div class="text-xs space-y-2.5 leading-relaxed text-slate-300">
+            <p><strong class="text-blue-400">Hashing (One-Way):</strong> Irreversible fixed-length output fingerprint. You cannot decrypt it. Used to secure database passwords (e.g. bcrypt).</p>
+            <p><strong class="text-indigo-400">Encryption (Two-Way):</strong> Reversible cipher transformation. Plaintext can be restored using decryption keys. Used for secure network transport (e.g. SSL/HTTPS).</p>
+          </div>
+        </div>
+
+        <div class="glass-panel p-5 rounded-2xl border border-white/5 space-y-3">
+          <h3 class="text-sm font-bold text-white flex items-center gap-2 border-b border-white/5 pb-2">
+            <svg class="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+            Authentication vs Authorization
+          </h3>
+          <div class="text-xs space-y-2.5 leading-relaxed text-slate-300">
+            <p><strong class="text-emerald-400">Authentication (Identity):</strong> "Are you who you claim to be?" Verified via login IDs, password hash matching, and OTP validation.</p>
+            <p><strong class="text-teal-400">Authorization (Privilege):</strong> "Are you allowed to run this action?" Verified via checking user roles (Student vs Teacher vs Admin) on routes.</p>
+          </div>
+        </div>
+
+        <div class="glass-panel p-5 rounded-2xl border border-white/5 space-y-3">
+          <h3 class="text-sm font-bold text-white flex items-center gap-2 border-b border-white/5 pb-2">
+            <svg class="w-4 h-4 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            WebSocket vs Socket.IO
+          </h3>
+          <div class="text-xs space-y-2.5 leading-relaxed text-slate-300">
+            <p><strong class="text-amber-400">WebSockets (Protocol):</strong> Standard TCP networking protocol (ws://) for full-duplex bi-directional streams. Lacks groupings or fallback handlers.</p>
+            <p><strong class="text-yellow-400">Socket.IO (Library):</strong> Wrapper adding automatic reconnects, rooms partitioning, event namespaces, and HTTP long-polling fallback safeguards.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Viva Elevator Pitch -->
+      <div class="glass-panel p-6 rounded-2xl border border-blue-500/10 bg-blue-950/5">
+        <h3 class="text-base font-bold text-white flex items-center gap-1.5 mb-2">
+          <svg class="w-5 h-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          Quick Pitch Summary
+        </h3>
+        <p class="text-sm text-slate-300 leading-relaxed">
+          "EduSync is a full-stack academic portal built on the MERN stack (React, Node, Express, MongoDB). For session management, we use **JWTs** (stateless tokens) divided into short-lived access tokens kept in React memory and long-lived refresh tokens in **HttpOnly cookies** (blocking JavaScript access/XSS). API communications are driven by **Axios** (which uses response interceptors to refresh access tokens on 401 errors automatically). We run **Socket.IO** for real-time notifications, placing clients in role-specific **Rooms** (like 'admins' or 'batch:CSE') to push notifications instantly without client-side polling."
+        </p>
+      </div>
+
+      <!-- List Filters -->
+      <div class="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center justify-between border-b border-white/10 pb-4">
+        <div>
+          <h2 class="text-lg font-bold text-white">Interactive Subject Guide</h2>
+          <p class="text-xs text-slate-400 mt-0.5">Filter questions by topic or use the search bar to find matching answers.</p>
+        </div>
+
+        <div class="flex flex-wrap gap-2">
+          <select id="guide-filter-category" onchange="filterQuestions()" class="bg-white/5 border border-white/10 rounded-lg text-xs py-2 px-3 focus:outline-none focus:border-blue-500 text-white cursor-pointer">
+            <option value="All" class="bg-[#020617]">All Topics</option>
+            <option value="HTTP & APIs" class="bg-[#020617]">HTTP & APIs</option>
+            <option value="React" class="bg-[#020617]">React</option>
+            <option value="Express & Node" class="bg-[#020617]">Express & Node</option>
+            <option value="MongoDB & Mongoose" class="bg-[#020617]">MongoDB & Mongoose</option>
+            <option value="Security & JWT" class="bg-[#020617]">Security & JWT</option>
+            <option value="Socket.IO" class="bg-[#020617]">Socket.IO</option>
+            <option value="Project Architecture" class="bg-[#020617]">Project Workflows</option>
+          </select>
+          
+          <div class="relative">
+            <svg class="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            <input 
+              type="text" 
+              id="guide-search" 
+              oninput="filterQuestions()" 
+              placeholder="Search guide..." 
+              class="pl-8 pr-3 py-1.5 bg-white/5 border border-white/10 rounded-lg text-xs focus:outline-none focus:border-blue-500 text-white placeholder-slate-500 w-44"
+            />
+          </div>
+
+          <button onclick="toggleAllAnswers(true)" class="bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 text-[10px] font-bold px-3 py-1.5 rounded-lg active-press transition-all">
+            Expand All
+          </button>
+          <button onclick="toggleAllAnswers(false)" class="bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 text-[10px] font-bold px-3 py-1.5 rounded-lg active-press transition-all">
+            Collapse All
+          </button>
+        </div>
+      </div>
+
+      <!-- Question List Container -->
+      <div class="space-y-4" id="guide-questions-container">
+        <!-- Rendered dynamically -->
+      </div>
+    </section>
+
+    <!-- TAB 2: PROJECT CODE STRUCTURE -->
+    <section id="tab-content-code-structure" class="tab-content hidden space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        <!-- Left Panel: Interactive Tree -->
+        <div class="lg:col-span-5 glass-panel p-5 rounded-2xl border border-white/5 h-[550px] overflow-y-auto">
+          <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-1.5">
+            <svg class="w-4.5 h-4.5 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
+            EduSync Repository Tree
+          </h3>
+          <div class="font-mono text-xs space-y-1.5" id="directory-tree-list">
+            <!-- Directory nodes generated dynamically -->
+          </div>
+        </div>
+
+        <!-- Right Panel: Description Panel -->
+        <div class="lg:col-span-7 glass-panel p-6 rounded-2xl border border-white/5 min-h-[400px] flex flex-col justify-between" id="tree-details-panel">
+          <div class="text-center py-20 text-slate-500 space-y-2 my-auto">
+            <svg class="w-12 h-12 mx-auto stroke-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <p class="text-sm">Click any folder or file in the directory tree on the left to reveal its stack role, connections, and responsibilities.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TAB 3: VISUAL FLOW TIMELINES -->
+    <section id="tab-content-visual-flow" class="tab-content hidden space-y-6">
+      
+      <!-- Flow selector -->
+      <div class="flex flex-wrap gap-2 border-b border-white/5 pb-4">
+        <button onclick="switchFlow('auth')" id="flow-btn-auth" class="flow-tab-btn px-4 py-2 rounded-lg text-sm font-semibold transition-all cursor-pointer bg-blue-600/10 text-blue-400 border border-blue-500/20">
+          JWT Authentication & Refresh Loop
+        </button>
+        <button onclick="switchFlow('socket')" id="flow-btn-socket" class="flow-tab-btn px-4 py-2 rounded-lg text-sm font-semibold transition-all cursor-pointer text-slate-400 hover:text-slate-200">
+          Socket.IO Notification Loop
+        </button>
+        <button onclick="switchFlow('reset')" id="flow-btn-reset" class="flow-tab-btn px-4 py-2 rounded-lg text-sm font-semibold transition-all cursor-pointer text-slate-400 hover:text-slate-200">
+          OTP Password Recovery Flow
+        </button>
+      </div>
+
+      <!-- Flow container -->
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-6 items-start">
+        
+        <!-- Steps Timeline left -->
+        <div class="md:col-span-2 space-y-3" id="flow-timeline-steps">
+          <!-- Populated dynamically -->
+        </div>
+
+        <!-- Detail card right -->
+        <div class="md:col-span-3 glass-panel p-6 rounded-2xl border border-white/5 space-y-6" id="flow-detail-panel">
+          <!-- Populated dynamically -->
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TAB 4: MOCK VIVA SIMULATOR -->
+    <section id="tab-content-simulator" class="tab-content hidden max-w-2xl mx-auto">
+      <div id="simulator-start-panel" class="glass-panel p-8 text-center rounded-2xl border border-white/5 space-y-6">
+        <div class="bg-blue-500/10 p-4 rounded-full border border-blue-500/20 text-blue-400 w-16 h-16 flex items-center justify-center mx-auto">
+          <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+        </div>
+        <div class="space-y-2">
+          <h3 class="text-2xl font-bold text-white">Mock Viva Practice Simulator</h3>
+          <p class="text-slate-400 text-sm max-w-md mx-auto leading-relaxed">
+            Test yourself in a simulated viva environment. We will draw 10 random questions from our 100+ guide. Answer in your head, reveal the answer, and evaluate your knowledge.
+          </p>
+        </div>
+        <button onclick="startQuiz()" class="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-6 py-3 rounded-lg text-sm flex items-center gap-2 mx-auto active-press transition-colors cursor-pointer">
+          Start Quiz Simulator
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+
+      <div id="simulator-quiz-panel" class="hidden space-y-6">
+        <!-- Quiz progress -->
+        <div class="flex justify-between items-center bg-white/5 p-3 rounded-xl border border-white/5 text-xs text-slate-400 font-semibold">
+          <span>Question <span id="quiz-question-index">1</span> of 10</span>
+          <div class="w-1/2 bg-white/10 h-1.5 rounded-full overflow-hidden">
+            <div id="quiz-progress-bar" class="bg-blue-500 h-full transition-all duration-300" style="width: 0%"></div>
+          </div>
+          <span>Confidence: <span id="quiz-confidence-percent">0%</span></span>
+        </div>
+
+        <!-- Question Card -->
+        <div class="glass-panel p-6 rounded-2xl border border-blue-500/15 bg-blue-950/5 space-y-4">
+          <span id="quiz-category-tag" class="bg-blue-500/10 text-blue-400 text-xs px-2.5 py-1 rounded border border-blue-500/15 font-semibold">
+            Category
+          </span>
+          <h2 id="quiz-question-text" class="text-xl font-bold text-white leading-snug">
+            Question?
+          </h2>
+        </div>
+
+        <!-- Answer box -->
+        <div id="quiz-reveal-box">
+          <button onclick="revealQuizAnswer()" class="w-full bg-white/5 hover:bg-white/10 text-white border border-white/10 font-bold p-8 rounded-2xl text-base flex flex-col items-center justify-center gap-2 cursor-pointer transition-all active-press">
+            <svg class="w-6 h-6 text-slate-400 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+            <span>Reveal Answer</span>
+          </button>
+        </div>
+
+        <div id="quiz-answer-box" class="hidden glass-panel p-6 rounded-2xl border border-white/5 bg-white/[0.01] space-y-4">
+          <div>
+            <h4 class="text-xs uppercase text-blue-400 font-bold tracking-wider mb-1">Expected Answer Details:</h4>
+            <p id="quiz-answer-text" class="text-sm text-slate-200 leading-relaxed whitespace-pre-line">
+              Answer explanation...
+            </p>
+          </div>
+          <div class="pt-3 border-t border-white/5">
+            <p class="text-xs text-slate-400 mb-3 font-semibold">Self-Evaluate: How did you answer this?</p>
+            <div class="grid grid-cols-3 gap-2">
+              <button onclick="gradeQuizQuestion('good')" class="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/20 p-3 rounded-lg text-xs font-bold transition-all cursor-pointer">
+                Nailed it! (Confident)
+              </button>
+              <button onclick="gradeQuizQuestion('partial')" class="bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/20 p-3 rounded-lg text-xs font-bold transition-all cursor-pointer">
+                Partial recall
+              </button>
+              <button onclick="gradeQuizQuestion('poor')" class="bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 p-3 rounded-lg text-xs font-bold transition-all cursor-pointer">
+                Forgot / Unsure
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reset Button -->
+        <button onclick="exitQuiz()" class="text-xs text-slate-500 hover:text-slate-400 flex items-center gap-1 font-semibold mx-auto cursor-pointer">
+          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12.066 11.2a1 1 0 000 1.6l5.334 4A1 1 0 0019 16V8a1 1 0 00-1.6-.8l-5.334 4zM4.066 11.2a1 1 0 000 1.6l5.334 4A1 1 0 0011 16V8a1 1 0 00-1.6-.8l-5.334 4z"/></svg>
+          Exit Simulator
+        </button>
+      </div>
+
+      <!-- Results view -->
+      <div id="simulator-results-panel" class="hidden glass-panel p-6 sm:p-8 rounded-2xl border border-white/5 space-y-6">
+        <div class="text-center space-y-2">
+          <div class="bg-emerald-500/10 p-3 rounded-full border border-emerald-500/20 text-emerald-400 w-14 h-14 flex items-center justify-center mx-auto">
+            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <h3 class="text-2xl font-bold text-white">Quiz Scorecard</h3>
+          <p class="text-slate-400 text-xs">Self-grading report computed successfully.</p>
+        </div>
+
+        <div class="bg-white/5 p-4 rounded-xl border border-white/5 flex items-center justify-between">
+          <div>
+            <p class="text-xs text-slate-400 font-semibold uppercase">Overall Confidence Rate</p>
+            <p id="quiz-final-percent" class="text-3xl font-extrabold text-white mt-1">0%</p>
+          </div>
+          <div class="flex gap-4 text-xs font-semibold text-right">
+            <div>
+              <span class="inline-block h-2 w-2 rounded-full bg-emerald-500 mr-1.5"></span>
+              <span class="text-slate-400">Nailed:</span> <span id="quiz-count-good" class="text-emerald-400 font-bold">0</span>
+            </div>
+            <div>
+              <span class="inline-block h-2 w-2 rounded-full bg-amber-500 mr-1.5"></span>
+              <span class="text-slate-400">Partial:</span> <span id="quiz-count-partial" class="text-amber-400 font-bold">0</span>
+            </div>
+            <div>
+              <span class="inline-block h-2 w-2 rounded-full bg-red-500 mr-1.5"></span>
+              <span class="text-slate-400">Missed:</span> <span id="quiz-count-poor" class="text-red-400 font-bold">0</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-3">
+          <h4 class="text-sm font-bold text-slate-200">Category Confidence Breakdown:</h4>
+          <div id="quiz-category-breakdown" class="space-y-2">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+
+        <div class="flex gap-3 pt-2">
+          <button onclick="startQuiz()" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-bold p-3 rounded-lg text-sm text-center active-press cursor-pointer">
+            Retake Simulator
+          </button>
+          <button onclick="switchTab('study-guide')" class="flex-1 bg-white/5 hover:bg-white/10 text-white border border-white/10 font-bold p-3 rounded-lg text-sm text-center active-press cursor-pointer">
+            Back to Study Guide
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: CHEATSHEET GLOSSARY -->
+    <section id="tab-content-cheatsheet" class="tab-content hidden space-y-6">
+      
+      <!-- Glossary Header -->
+      <div class="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center justify-between border-b border-white/5 pb-4">
+        <div>
+          <h2 class="text-lg font-bold text-white">HTTP & Web Engineering Glossary</h2>
+          <p class="text-xs text-slate-400 mt-0.5">Quick search table for HTTP status codes, standard methods, and stack terminology.</p>
+        </div>
+        <div class="relative">
+          <svg class="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          <input 
+            type="text" 
+            id="glossary-search" 
+            oninput="filterGlossary()" 
+            placeholder="Search definitions..." 
+            class="pl-8 pr-3 py-1.5 bg-white/5 border border-white/10 rounded-lg text-xs focus:outline-none focus:border-blue-500 text-white placeholder-slate-500 w-64"
+          />
+        </div>
+      </div>
+
+      <!-- Quick tables -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- HTTP Methods Table -->
+        <div class="glass-panel p-5 rounded-2xl border border-white/5 space-y-3">
+          <h3 class="text-sm font-bold text-white border-b border-white/5 pb-2">Important HTTP Methods (Verbs)</h3>
+          <div class="space-y-2">
+            <div class="flex justify-between items-start py-1 text-xs border-b border-white/5 last:border-0 pb-2">
+              <span class="font-mono text-blue-400 font-bold bg-blue-500/10 px-1.5 py-0.5 rounded mr-3">GET</span>
+              <span class="text-slate-300 flex-1 leading-relaxed">Requests representation of the specified resource. Requests using GET should only retrieve data and have no other effect. (e.g. fetching attendance logs).</span>
+            </div>
+            <div class="flex justify-between items-start py-1 text-xs border-b border-white/5 last:border-0 pb-2">
+              <span class="font-mono text-emerald-400 font-bold bg-emerald-500/10 px-1.5 py-0.5 rounded mr-3">POST</span>
+              <span class="text-slate-300 flex-1 leading-relaxed">Submits data to be processed to the specified resource, frequently resulting in creation of records or side-effects (e.g. logging in, sending OTPs).</span>
+            </div>
+            <div class="flex justify-between items-start py-1 text-xs border-b border-white/5 last:border-0 pb-2">
+              <span class="font-mono text-amber-400 font-bold bg-amber-500/10 px-1.5 py-0.5 rounded mr-3">PUT</span>
+              <span class="text-slate-300 flex-1 leading-relaxed">Replaces all current representations of the target resource with the uploaded request payload. Used for full updates (e.g. editing teacher profile details).</span>
+            </div>
+            <div class="flex justify-between items-start py-1 text-xs border-b border-white/5 last:border-0 pb-2">
+              <span class="font-mono text-yellow-400 font-bold bg-yellow-500/10 px-1.5 py-0.5 rounded mr-3">PATCH</span>
+              <span class="text-slate-300 flex-1 leading-relaxed">Applies partial modifications to a resource. Unlike PUT, only specified fields are altered (e.g. updating a request status flag from pending to approved).</span>
+            </div>
+            <div class="flex justify-between items-start py-1 text-xs last:border-0 pb-2">
+              <span class="font-mono text-red-400 font-bold bg-red-500/10 px-1.5 py-0.5 rounded mr-3">DELETE</span>
+              <span class="text-slate-300 flex-1 leading-relaxed">Removes the specified resource from the backend server database (e.g. deleting a user account).</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- HTTP Status Codes Table -->
+        <div class="glass-panel p-5 rounded-2xl border border-white/5 space-y-3">
+          <h3 class="text-sm font-bold text-white border-b border-white/5 pb-2">Important HTTP Status Codes</h3>
+          <div class="space-y-2">
+            <div class="flex justify-between items-start py-1 text-xs border-b border-white/5 last:border-0 pb-1.5">
+              <span class="font-mono text-emerald-400 font-bold mr-3">200 OK</span>
+              <span class="text-slate-300 flex-1">Standard request succeeded. Represents data successfully fetched and sent.</span>
+            </div>
+            <div class="flex justify-between items-start py-1 text-xs border-b border-white/5 last:border-0 pb-1.5">
+              <span class="font-mono text-emerald-400 font-bold mr-3">201 Created</span>
+              <span class="text-slate-300 flex-1">Request succeeded and a new database resource was created (e.g. new circular added).</span>
+            </div>
+            <div class="flex justify-between items-start py-1 text-xs border-b border-white/5 last:border-0 pb-1.5">
+              <span class="font-mono text-red-400 font-bold mr-3">400 Bad Request</span>
+              <span class="text-slate-300 flex-1">Server cannot process request due to client side validation fail (e.g. missing inputs or weak password).</span>
+            </div>
+            <div class="flex justify-between items-start py-1 text-xs border-b border-white/5 last:border-0 pb-1.5">
+              <span class="font-mono text-red-400 font-bold mr-3">401 Unauthorized</span>
+              <span class="text-slate-300 flex-1">Identity validation failure. Token is missing, expired, or invalid. Calls for login redirect or refresh.</span>
+            </div>
+            <div class="flex justify-between items-start py-1 text-xs border-b border-white/5 last:border-0 pb-1.5">
+              <span class="font-mono text-red-400 font-bold mr-3">403 Forbidden</span>
+              <span class="text-slate-300 flex-1">Identity is verified but the user lacks access rights/role privileges (e.g. student calling user delete route).</span>
+            </div>
+            <div class="flex justify-between items-start py-1 text-xs border-b border-white/5 last:border-0 pb-1.5">
+              <span class="font-mono text-red-400 font-bold mr-3">404 Not Found</span>
+              <span class="text-slate-300 flex-1">The requested server endpoint resource does not exist in backend paths.</span>
+            </div>
+            <div class="flex justify-between items-start py-1 text-xs last:border-0 pb-1.5">
+              <span class="font-mono text-red-500 font-bold mr-3">500 Server Error</span>
+              <span class="text-slate-300 flex-1">Backend server crashed or encountered database exceptions trying to fulfill the API logic.</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- General Terms Glossary -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="glossary-container">
+        <!-- Rendered dynamically -->
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 pt-6 mt-12 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-500 font-semibold pb-12">
+      <p>EduSync Standalone Viva Preparation Portal © 2026</p>
+      <div class="flex gap-4">
+        <span>Chitkara University CSE Viva Guide</span>
+        <span>•</span>
+        <span>MERN & Socket.IO Architecture</span>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Javascript Logic -->
+  <script>
+    // ----------------------------------------------------
+    // QUESTION BANK: 100+ Advanced Viva Questions (HTML/CSS & Basic JS removed)
+    // ----------------------------------------------------
+    const VIVA_QUESTIONS = [
+      // --- SECTION 1: HTTP & APIs (15 Questions) ---
+      { id: 'http1', category: 'HTTP & APIs', question: "What is HTTP and how does it function?", answer: "Hypertext Transfer Protocol is a stateless application layer protocol used to transmit files and data over TCP. It operates on a request-response model: client opens TCP stream, submits request headers/payload, server processes, returns response, and terminates stream." },
+      { id: 'http2', category: 'HTTP & APIs', question: "What does 'Stateless Protocol' mean in HTTP?", answer: "It means the server does not store user session data between requests. Every single incoming HTTP request is processed independently and must carry all the identity/data details needed to authorize it." },
+      { id: 'http3', category: 'HTTP & APIs', question: "Explain the differences between GET, POST, PUT, PATCH, and DELETE methods.", answer: "1. GET: Fetches resource data (read-only).\n2. POST: Sends payloads to create a new resource.\n3. PUT: Replaces/rewrites entire target resource with payload.\n4. PATCH: Partially updates target resource (only modifies passed fields).\n5. DELETE: Deletes target resource." },
+      { id: 'http4', category: 'HTTP & APIs', question: "Describe HTTP status code classes: 1xx, 2xx, 3xx, 4xx, 5xx.", answer: "1. 1xx: Informational alerts.\n2. 2xx: Success (200 OK, 201 Created).\n3. 3xx: Redirections.\n4. 4xx: Client Side Errors (400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found).\n5. 5xx: Server Side Errors (500 Internal Server Error)." },
+      { id: 'http5', category: 'HTTP & APIs', question: "What is CORS and why does the browser enforce it?", answer: "Cross-Origin Resource Sharing is a browser security mechanism. It blocks client-side scripts from reading responses of API calls made to a different origin (port/domain) unless the target server explicitly returns headers (e.g. Access-Control-Allow-Origin) permitting it." },
+      { id: 'http6', category: 'HTTP & APIs', question: "What is REST and what are its key constraints?", answer: "REpresentational State Transfer is an architectural API style. Constraints include:\n1. Client-Server separation.\n2. Stateless routing.\n3. Cacheable responses.\n4. Uniform interface (resource URIs, HTTP verbs).\n5. Layered system." },
+      { id: 'http7', category: 'HTTP & APIs', question: "What are HTTP Request and Response Headers?", answer: "Key-value metadata payloads sent alongside requests/responses to describe data formats, auth tokens, cache rules, cookies, and CORS limits." },
+      { id: 'http8', category: 'HTTP & APIs', question: "What is the difference between HTTP and HTTPS?", answer: "HTTPS is HTTP wrapped in an SSL/TLS layer. It encrypts all network packets transmitted between client and server, preventing eavesdropping and tampering by middle-men." },
+      { id: 'http9', category: 'HTTP & APIs', question: "What is Payload/Request Body and when is it sent?", answer: "The data block sent to the server following HTTP headers. Used during POST, PUT, or PATCH calls to transmit user inputs, files, or JSON records." },
+      { id: 'http10', category: 'HTTP & APIs', question: "What is TCP/IP and how does it relate to HTTP?", answer: "TCP/IP is the transport and network layer suite. TCP provides reliable, ordered transmission of bytes between endpoints. HTTP sits on top of TCP, formatting data requests and responses." },
+      { id: 'http11', category: 'HTTP & APIs', question: "Explain the OSI Model layers.", answer: "A 7-layer framework: Physical, Data Link, Network, Transport, Session, Presentation, Application. HTTP/WebSockets operate at Layer 7 (Application); TCP operates at Layer 4 (Transport)." },
+      { id: 'http12', category: 'HTTP & APIs', question: "What is DNS (Domain Name System)?", answer: "The phonebook of the web. It translates human-readable domain names (like google.com) into numerical IP addresses (like 142.250.190.46) so browsers can route network packets." },
+      { id: 'http13', category: 'HTTP & APIs', question: "What is the purpose of HTTP/2 and HTTP/3?", answer: "To improve web performance. HTTP/2 introduces multiplexing (multiple requests over one connection) and header compression. HTTP/3 swaps TCP for QUIC (UDP-based), resolving head-of-line blocking." },
+      { id: 'http14', category: 'HTTP & APIs', question: "What are Query Parameters vs Path Parameters in URL?", answer: "1. Path Parameter: Identifies a resource path: `/api/users/:id`.\n2. Query Parameter: Filters/sorts resources: `/api/users?role=student`." },
+      { id: 'http15', category: 'HTTP & APIs', question: "What is WebSockets frame overhead vs HTTP header overhead?", answer: "HTTP requests carry large headers (typically 500-1000 bytes) containing cookies, agent info, etc., on *every* transfer. WebSockets, once established, send lightweight binary frames (overhead is only 2-10 bytes), making WebSockets dramatically more efficient for continuous streaming." },
+
+      // --- SECTION 2: REACT (15 Questions) ---
+      { id: 're1', category: 'React', question: "What is React and what is the Virtual DOM?", answer: "React is a component-based UI library. The Virtual DOM is a lightweight JS memory representation of the actual DOM. When component state changes, React updates this virtual tree first, diffs it against a previous snapshot, and updates only the changed parts of the real DOM (Reconciliation)." },
+      { id: 're2', category: 'React', question: "What is JSX?", answer: "JavaScript XML. A syntax extension allowing HTML structures to be written inside JavaScript. Babel compiles JSX down to standard React nested function calls: `React.createElement(...)`." },
+      { id: 're3', category: 'React', question: "What is React State vs Props?", answer: "1. State: Private, local data managed *inside* a component. When state changes, the component re-renders.\n2. Props: Read-only configuration values passed down from parent components." },
+      { id: 're4', category: 'React', question: "Explain the `useEffect` Hook and its dependency array.", answer: "Used to handle side-effects in functional components. Dependency array values determine execution: \n1. Omitted: Runs on every render.\n2. Empty Array `[]`: Runs once on mount.\n3. Array `[dep]`: Runs on mount and whenever `dep` changes." },
+      { id: 're5', category: 'React', question: "What is React Context API and when should you use it?", answer: "A system to share global data (like auth state or theme) across components without manually passing props down through every level (prop drilling)." },
+      { id: 're6', category: 'React', question: "Explain the `useMemo` hook vs the `useCallback` hook.", answer: "1. `useMemo`: Caches and returns the memoized *value* of a heavy function computation.\n2. `useCallback`: Caches and returns the memoized *function instance* itself to prevent re-creation on renders." },
+      { id: 're7', category: 'React', question: "What are React Keys and why are they needed in lists?", answer: "Keys are unique string tags passed to elements in array loops. They help React identify which items were modified, added, or removed during virtual DOM diffing, optimizing rendering performance." },
+      { id: 're8', category: 'React', question: "What is a custom hook in React?", answer: "A reusable JavaScript function prefix-named with 'use' (e.g. `useSocket`) that can call other React hooks to extract component logic into reusable modules." },
+      { id: 're9', category: 'React', question: "What is the difference between Controlled and Uncontrolled components?", answer: "1. Controlled: Element values (like input text) are bound to React state and updated via `onChange` handlers.\n2. Uncontrolled: Element data is pulled directly from the DOM using React `useRef` refs." },
+      { id: 're10', category: 'React', question: "Explain Code Splitting and Lazy Loading in React.", answer: "Webpack splits the code bundle into smaller chunks. Using `React.lazy()` and `<Suspense>`, we load pages only when the user navigates to them, improving initial page load speed." },
+      { id: 're11', category: 'React', question: "What is the difference between client-side state hooks (useState) and global context (Context API)?", answer: "`useState` stores state isolated to a single component and its direct children. `Context API` acts as a global broadcast channel, bypassing middle components entirely to distribute state directly to any subscribing child." },
+      { id: 're12', category: 'React', question: "What is double rendering in React StrictMode and why does it happen?", answer: "In development mode, React StrictMode intentionally renders components twice. This helps identify side-effects, memory leaks, and impure state updates that could cause bugs in production." },
+      { id: 're13', category: 'React', question: "How does React Router DOM handle page navigation?", answer: "It intercepts browser URL changes, matches the path to a declared `<Route>` component, and dynamically swaps the page view without triggering a full page reload." },
+      { id: 're14', category: 'React', question: "What does the `useRef` hook do?", answer: "Provides a mutable reference object whose `.current` property persists across renders. Changing its value does *not* trigger a component re-render. Often used to access DOM elements directly." },
+      { id: 're15', category: 'React', question: "What is prop drilling and how do you resolve it?", answer: "The process of passing props through multiple levels of nested child components that don't need the data themselves, just to reach a deep child. Solved using Context API or Redux." },
+
+      // --- SECTION 3: EXPRESS & NODE (15 Questions) ---
+      { id: 'ex1', category: 'Express & Node', question: "What is Node.js and how does it handle asynchronous I/O?", answer: "Node.js is a V8-based JavaScript runtime. It is single-threaded and uses an Event Loop. For heavy operations (like reading files or network requests), it delegates work to the OS kernel or thread pool (libuv) and resumes execution when notified, avoiding thread blocking." },
+      { id: 'ex2', category: 'Express & Node', question: "What is Express.js?", answer: "A minimal and flexible web application framework for Node.js. It simplifies routing, middleware integration, and API creation." },
+      { id: 'ex3', category: 'Express & Node', question: "What is Express Middleware and what are its parameters?", answer: "Middleware is a function executing between request receipt and response delivery. Parameters: `req` (request object), `res` (response object), and `next` (callback triggering the next handler)." },
+      { id: 'ex4', category: 'Express & Node', question: "Explain the difference between `app.use()` and specific route verbs like `app.post()`.", answer: "`app.use()` applies middleware globally to all HTTP methods and paths starting with a prefix. Specific verbs like `app.post()` or `app.get()` only handle matches for that specific method and exact URL." },
+      { id: 'ex5', category: 'Express & Node', question: "What is the role of `body-parser` or `express.json()` middleware?", answer: "Express by default cannot parse request body text. `express.json()` intercepts incoming POST/PUT JSON strings and parses them into a readable JavaScript object at `req.body`." },
+      { id: 'ex6', category: 'Express & Node', question: "Explain `process.env` and the `dotenv` library.", answer: "`process.env` holds environment variables. The `dotenv` library loads configuration tokens (like DB URLs, secrets) from a local `.env` file into memory at server startup, avoiding hardcoded secrets." },
+      { id: 'ex7', category: 'Express & Node', question: "What is CORS middleware in Express?", answer: "An Express package configured to append Access-Control-Allow-Origin headers to API responses, allowing or blocking requests from origins like a React client." },
+      { id: 'ex8', category: 'Express & Node', question: "How do you handle errors globally in Express?", answer: "By registering an error-handling middleware *after* all routes. It must take four parameters: `(err, req, res, next)`. Any route throwing an error will automatically fall into this handler." },
+      { id: 'ex9', category: 'Express & Node', question: "What is the event loop phase distribution in Node.js?", answer: "The event loop operates in specific phases:\n1. Timers (setTimeout/setInterval)\n2. Pending callbacks (system I/O)\n3. Idle/prepare (internal)\n4. Poll (retrieves new I/O events)\n5. Check (setImmediate callbacks)\n6. Close callbacks (socket disconnect cleanups)." },
+      { id: 'ex10', category: 'Express & Node', question: "What is NPM?", answer: "Node Package Manager. A tool and registry to manage project packages, dependencies, and script shortcuts (declared in package.json)." },
+      { id: 'ex11', category: 'Express & Node', question: "What is the difference between CommonJS and ES Modules?", answer: "1. CommonJS: Traditional Node module format (`require()` and `module.exports`), evaluated synchronously.\n2. ES Modules: Modern standard (`import` and `export`), statically parsed before execution." },
+      { id: 'ex12', category: 'Express & Node', question: "What are streams and buffer buffers in Node?", answer: "1. Buffer: Raw chunks of binary memory allocation.\n2. Stream: An interface to read or write data incrementally in chunks, avoiding loading huge files into RAM at once." },
+      { id: 'ex13', category: 'Express & Node', question: "Explain how Express handles asynchronous route errors in Node v14+ vs older versions.", answer: "In older Express v4, asynchronous errors (e.g. unhandled Promise rejections inside async route handlers) had to be caught manually and passed using `next(error)`. In Node v16+ and Express v5, async errors are intercepted automatically and forwarded to the global error middleware." },
+      { id: 'ex14', category: 'Express & Node', question: "Explain Node's single-threaded nature. Can it run multi-threaded?", answer: "JS code runs on a single main thread. However, under the hood, Node utilizes the libuv thread pool for heavy system I/O tasks. You can also run multi-threaded JS using worker_threads." },
+      { id: 'ex15', category: 'Express & Node', question: "What is the difference between `res.send()` and `res.json()` in Express?", answer: "`res.json()` automatically sets the Content-Type header to `application/json` and stringifies JS objects. `res.send()` is generic and can return strings, HTML, or buffers." },
+
+      // --- SECTION 4: DATABASE (MONGOOSE & MONGO) (15 Questions) ---
+      { id: 'db1', category: 'MongoDB & Mongoose', question: "What is MongoDB and how is data structured?", answer: "MongoDB is a NoSQL document database. Data is stored in collections as BSON (Binary JSON) documents. Each document is a key-value structure containing flexible dynamic types, avoiding strict SQL table layouts." },
+      { id: 'db2', category: 'MongoDB & Mongoose', question: "Why use NoSQL MongoDB instead of relational SQL databases?", answer: "MongoDB excels at scaling and flexible schemas. In academic apps, user structures differ by role: students need grades/semesters; teachers need departments. Storing this dynamically in document models is simpler than maintaining multi-table relational SQL Joins." },
+      { id: 'db3', category: 'MongoDB & Mongoose', question: "What is Mongoose and why do we use it with MongoDB?", answer: "Mongoose is an Object Data Modeling (ODM) library for Node. It enforces structure and schema rules on MongoDB, handles validators (e.g. verifying email formats), manages database models, and handles query operations." },
+      { id: 'db4', category: 'MongoDB & Mongoose', question: "What is a Schema vs a Model in Mongoose?", answer: "1. Schema: The architectural blueprint defining data structure, fields, and types.\n2. Model: A compiled constructor class built from the schema. It interacts directly with the database to find, create, or update records." },
+      { id: 'db5', category: 'MongoDB & Mongoose', question: "Explain Mongoose validations and give examples.", answer: "Schema-level rules to ensure data integrity. Examples: `required: true`, custom regex arrays for password complexity, or setting `min` and `max` values on student marks." },
+      { id: 'db6', category: 'MongoDB & Mongoose', question: "How does `populate()` work in Mongoose and why is it useful?", answer: "Mongoose doesn't support SQL Joins. We store document references (`ObjectId`). `populate()` queries and replaces these IDs with the actual referenced documents (e.g. replacing a `requester` ID with the full `User` details)." },
+      { id: 'db7', category: 'MongoDB & Mongoose', question: "Explain Mongoose Hooks (Middleware) like `pre` and `post`.", answer: "Functions that run before or after database events. In EduSync, a `pre('save')` hook hashes the user's password using bcrypt before it is saved to MongoDB." },
+      { id: 'db8', category: 'MongoDB & Mongoose', question: "What is the difference between SQL and NoSQL?", answer: "1. SQL: Relational tables, strict schemas, ACID transactions, uses JOIN statements.\n2. NoSQL: Document-oriented, flexible dynamic structures, high scalability, denormalized references." },
+      { id: 'db9', category: 'MongoDB & Mongoose', question: "What is an index scan vs a collection scan in MongoDB?", answer: "A collection scan (COLLSCAN) requires MongoDB to read *every single* document in a collection to return results, which is very slow. An index scan (IXSCAN) uses pre-sorted index pointer keys (like indexed `userId`), returning matching records almost instantly." },
+      { id: 'db10', category: 'MongoDB & Mongoose', question: "Explain what ObjectId is in MongoDB.", answer: "A unique 12-byte identifier automatically generated for every MongoDB document. It consists of a timestamp, machine identifier, process ID, and an incrementing counter." },
+      { id: 'db11', category: 'MongoDB & Mongoose', question: "What does `{ timestamps: true }` do in Mongoose?", answer: "Instructs Mongoose to automatically append and maintain `createdAt` and `updatedAt` date fields on every document." },
+      { id: 'db12', category: 'MongoDB & Mongoose', question: "What is the difference between `find()`, `findOne()`, and `findById()`?", answer: "1. `find()`: Returns an array of all matching documents.\n2. `findOne()`: Returns the first matching document.\n3. `findById()`: Directly returns the document matching the target `_id`." },
+      { id: 'db13', category: 'MongoDB & Mongoose', question: "How does Mongoose handle transactions?", answer: "Using MongoDB Sessions, transactions let you run multiple database writes. If one fails, the entire transaction is rolled back, maintaining database integrity." },
+      { id: 'db14', category: 'MongoDB & Mongoose', question: "What are Mongoose Virtuals and when do we use them?", answer: "Properties that can be set on documents but are *not* saved to MongoDB (e.g. combining `firstName` and `lastName` to return `fullName` on query). Often configured with `{ toJSON: { virtuals: true } }` so they serialize and send correctly to the React client." },
+      { id: 'db15', category: 'MongoDB & Mongoose', question: "Explain normalization vs denormalization in MongoDB.", answer: "1. Normalization: Referencing documents by storing ObjectIds. Keeps data clean and dry.\n2. Denormalization: Duplicating fields across documents (e.g. writing student batch directly in attendance logs). Speeds up queries by removing `$lookup/populate` workloads." },
+
+      // --- SECTION 5: SECURITY & JWT (15 Questions) ---
+      { id: 'sec1', category: 'Security & JWT', question: "What is JWT (JSON Web Token) and what is its structure?", answer: "A stateless session token split into three parts:\n1. Header: Signing algorithm info.\n2. Payload: User identity claims (role, id).\n3. Signature: Cryptographic hash of header + payload + secret key. Authenticates the token." },
+      { id: 'sec2', category: 'Security & JWT', question: "Why do we use Access and Refresh tokens?", answer: "Access tokens are short-lived (15 mins) and sent in headers. If stolen, they expire quickly. Refresh tokens are long-lived (7 days) and stored in secure cookies, generating new access tokens without requiring login prompts." },
+      { id: 'sec3', category: 'Security & JWT', question: "Why do we hash passwords instead of encrypting them?", answer: "Hashing is a one-way mathematical function. Since hashes cannot be reversed, a database leak will not expose plaintext credentials. Encryption is reversible and key-theft exposes all credentials." },
+      { id: 'sec4', category: 'Security & JWT', question: "What is bcrypt and what are 'salts'?", answer: "bcrypt is a hashing function. A 'salt' is a random string added to the password before hashing, ensuring identical passwords produce unique hash results to block rainbow dictionary attacks." },
+      { id: 'sec5', category: 'Security & JWT', question: "What is an HttpOnly Cookie and why is it secure?", answer: "A browser cookie flag that prevents client-side JavaScript (like `document.cookie`) from reading the token. This blocks token extraction via XSS (Cross-Site Scripting)." },
+      { id: 'sec6', category: 'Security & JWT', question: "What is XSS (Cross-Site Scripting) and how do we prevent it?", answer: "An attack where malicious scripts are injected into web pages. Prevented by escaping user input, sanitizing data, and storing session tokens in HttpOnly cookies." },
+      { id: 'sec7', category: 'Security & JWT', question: "What is CSRF (Cross-Site Request Forgery) and how do we prevent it?", answer: "An attack forcing a user's browser to execute unwanted actions on a trusted site. Prevented using anti-CSRF tokens, checking Referer headers, or setting cookie `SameSite` flags to `Strict`." },
+      { id: 'sec8', category: 'Security & JWT', question: "How does bcrypt protect against GPU brute-forcing (Key Stretching/Work Factor)?", answer: "bcrypt runs a key derivation algorithm configured with a 'work factor' (rounds). This introduces artificial mathematical delay (e.g. 50-100ms per attempt). While unnoticeable to a single user, it blocks high-speed GPU dictionary cracking systems." },
+      { id: 'sec9', category: 'Security & JWT', question: "What is a Replay Attack in JWT and how does token expiration mitigate it?", answer: "An attack where an eavesdropper intercepts a valid JWT and reuses it to gain access. Setting a short expiration time (e.g., 15 minutes) limits the active window during which an intercepted token remains valid." },
+      { id: 'sec10', category: 'Security & JWT', question: "What is the payload of a JWT? Can sensitive data be placed there?", answer: "The payload holds custom user attributes (like `userId` and `role`). You must never store sensitive data like passwords there, as the payload is simply Base64 encoded and readable by anyone." },
+      { id: 'sec11', category: 'Security & JWT', question: "How does the backend verify a JWT?", answer: "The verify token middleware extracts the token from headers, hashes the header and payload with its secret key, and compares it to the token signature. If they match, the identity is verified." },
+      { id: 'sec12', category: 'Security & JWT', question: "What is Rate Limiting and why is it used?", answer: "Restricting API requests from a single IP to protect the server from DDoS attacks and brute-force login attempts." },
+      { id: 'sec13', category: 'Security & JWT', question: "What is OAuth?", answer: "An open authorization protocol allowing users to share private resources with third-party applications without exposing their passwords (e.g. 'Log in with Google')." },
+      { id: 'sec14', category: 'Security & JWT', question: "Explain the SameSite cookie attribute.", answer: "Controls cookie delivery in cross-site requests. Options: `Strict` (never sent on cross-site requests), `Lax` (sent on top-level navigations), or `None` (sent on all requests)." },
+      { id: 'sec15', category: 'Security & JWT', question: "What is a brute-force attack?", answer: "An attack trying every possible password combination until it finds the correct one. Blocked using rate-limiting, captcha challenge checks, and account lockout rules." },
+
+      // --- SECTION 6: SOCKET.IO (15 Questions) ---
+      { id: 'sock1', category: 'Socket.IO', question: "What is WebSocket protocol?", answer: "A TCP-based network protocol (ws://) providing full-duplex, persistent communication channels between client and server over a single connection." },
+      { id: 'sock2', category: 'Socket.IO', question: "What is the difference between HTTP polling and WebSockets?", answer: "HTTP polling repeatedly calls APIs to check for updates, wasting bandwidth. WebSockets establish a single persistent connection, allowing the server to push updates instantly." },
+      { id: 'sock3', category: 'Socket.IO', question: "Why use Socket.IO over raw WebSockets?", answer: "Socket.IO simplifies connection management, automatically reconnects if dropped, supports rooms, and falls back to HTTP polling if WebSockets are blocked by firewalls." },
+      { id: 'sock4', category: 'Socket.IO', question: "How does Socket.IO authenticate connections?", answer: "By verifying the client's JWT token during the initial connection handshake. Unauthenticated connections are rejected before joining any rooms." },
+      { id: 'sock5', category: 'Socket.IO', question: "What are Rooms in Socket.IO?", answer: "Isolated socket channels on the server. Sockets can join rooms (e.g. `socket.join('admins')`), enabling targeted broadcasts to specific groups." },
+      { id: 'sock6', category: 'Socket.IO', question: "What is a broadcast event in Socket.IO?", answer: "An event emitted to all connected sockets except the sender, or to everyone in a specific room." },
+      { id: 'sock7', category: 'Socket.IO', question: "Explain namespaces in Socket.IO.", answer: "Dedicated communication pathways multiplexed over a single connection, separating socket traffic (e.g. `/chat` vs `/notifications`)." },
+      { id: 'sock8', category: 'Socket.IO', question: "What is the difference between `socket.emit()` and `io.emit()`?", answer: "1. `socket.emit()`: Sends an event to only the sender client.\n2. `io.emit()`: Broadcasts the event globally to all connected clients." },
+      { id: 'sock9', category: 'Socket.IO', question: "What is the handshake in Socket.IO?", answer: "The initial HTTP request sent by the client to upgrade the connection to WebSocket. This is where connection tokens are validated." },
+      { id: 'sock10', category: 'Socket.IO', question: "How does Socket.IO handle disconnection?", answer: "It emits a 'disconnect' event. The server detects the drop, logs it, cleans up reference stores, and automatically tries to reconnect." },
+      { id: 'sock11', category: 'Socket.IO', question: "How does Socket.IO manage heartbeats and ping/pong packets?", answer: "To verify connection status, the Socket.IO server continuously sends ping packets. The client replies with a pong. If the server does not receive a pong within the configured timeout threshold, it considers the connection dead and cleans up." },
+      { id: 'sock12', category: 'Socket.IO', question: "How do we prevent memory leaks when registering event listeners in `SocketContext.jsx`?", answer: "In React's useEffect, when registering `socket.on('event', callback)`, you must return a cleanup function containing `socket.off('event', callback)` to clean up listeners when components unmount." },
+      { id: 'sock13', category: 'Socket.IO', question: "What is multiplexing in Socket.IO?", answer: "The capacity to run separate namespaces (like `/chat` and `/admin`) over a single underlying TCP connection, isolating traffic without opening multiple network sockets." },
+      { id: 'sock14', category: 'Socket.IO', question: "What is the socket ID and can we rely on it for user tracking?", answer: "The unique identifier generated for every connection. It changes on every page refresh or reconnect, meaning you cannot rely on it for long-term user tracking (use database User IDs instead)." },
+      { id: 'sock15', category: 'Socket.IO', question: "What is the maximum room size limit in Socket.IO?", answer: "There is no theoretical limit to room memberships. However, broadcasting to rooms containing thousands of concurrent connections will increase server CPU and memory usage, requiring load balancing." },
+
+      // --- SECTION 7: PROJECT WORKFLOWS (10 Questions) ---
+      { id: 'proj1', category: 'Project Architecture', question: "What is the project file architecture of EduSync?", answer: "Divided into: \n1. `/client`: React, Vite, Tailwind CSS, Axios, and contexts.\n2. `/server`: Node, Express, MongoDB schemas, and socket handlers." },
+      { id: 'proj2', category: 'Project Architecture', question: "Walk through the login flow.", answer: "User logs in -> Axios POST to `/api/auth/login` -> Express verifies credentials -> Server issues access token in response body and refresh token in HttpOnly cookie -> React stores user/token in `AuthContext`." },
+      { id: 'proj3', category: 'Project Architecture', question: "How does the token refresh interceptor work?", answer: "API returns `401 Unauthorized` -> Axios interceptor pauses, POSTs to `/auth/refresh` -> Server sends new access token -> Interceptor retries original failed request." },
+      { id: 'proj4', category: 'Project Architecture', question: "How does a teacher request get approved?", answer: "Teacher submits request via API -> Server saves pending state and emits `new_request` to admins room -> Admin approves request via API -> Server runs payload logic (attendance update/circular) and notifies target rooms." },
+      { id: 'proj5', category: 'Project Architecture', question: "Where is the Express app linked to the HTTP server?", answer: "In `server/index.js`, the Express instance is passed to `http.createServer(app)`. Socket.IO is attached to this HTTP server, allowing WebSockets and Express routes to share the same port." },
+      { id: 'proj6', category: 'Project Architecture', question: "How is CORS configured in our Express backend?", answer: "Using the `cors` package. We set the origin parameter to the client URL (`http://localhost:5173`) and set `credentials: true` to allow cookie transfers." },
+      { id: 'proj7', category: 'Project Architecture', question: "Explain the role-based middleware logic on the backend.", answer: "The `authorize(...roles)` middleware checks the role of the user (attached to `req.user` by the `verifyToken` middleware) and returns 403 if it does not match." },
+      { id: 'proj8', category: 'Project Architecture', question: "How does the Nodemailer OTP password recovery flow work?", answer: "forgotPassword route generates a random 6-digit OTP -> stores it in-memory with TTL -> sends to user via Nodemailer SMTP. resetPassword route verifies code and updates hashed database entries." },
+      { id: 'proj9', category: 'Project Architecture', question: "How does React Context help Socket connection routing?", answer: "The `SocketProvider` wraps the app. It initializes a socket connection only when the user is logged in, and distributes this single socket instance to all child components via context." },
+      { id: 'proj10', category: 'Project Architecture', question: "Why do we perform role checks on both frontend and backend?", answer: "Frontend checks control UI layouts (UX). Backend middleware guards actual API endpoints, securing data from manual API requests." }
+    ];
+
+    // ----------------------------------------------------
+    // PROJECT DIRECTORY TREE DATA
+    // ----------------------------------------------------
+    const PROJECT_TREE = {
+      name: "EduSync",
+      isDir: true,
+      desc: "Root project folder containing the decoupled client frontend and server backend codebases.",
+      children: [
+        {
+          name: "client",
+          isDir: true,
+          desc: "React frontend application compiled with Vite and styled using Tailwind CSS.",
+          children: [
+            {
+              name: "src",
+              isDir: true,
+              desc: "React frontend source files directory.",
+              children: [
+                {
+                  name: "api",
+                  isDir: true,
+                  desc: "Axios HTTP client configuration.",
+                  children: [
+                    { name: "axios.js", isDir: false, desc: "Configures the Axios client instance and implements the automatic JWT access token refresh mechanism using a response interceptor.", stackRole: "Frontend (Axios Interceptor)" }
+                  ]
+                },
+                {
+                  name: "context",
+                  isDir: true,
+                  desc: "React Context Providers managing global application state.",
+                  children: [
+                    { name: "AuthContext.jsx", isDir: false, desc: "Manages user login/logout session states, handles access tokens, and controls client-side route authorization.", stackRole: "Frontend State Context" },
+                    { name: "SocketContext.jsx", isDir: false, desc: "Establishes connection to the Socket.IO server using the auth token and listens for real-time notifications.", stackRole: "Frontend Socket Provider" }
+                  ]
+                },
+                {
+                  name: "pages",
+                  isDir: true,
+                  desc: "React page components defining individual URL layout views.",
+                  children: [
+                    { name: "Login.jsx", isDir: false, desc: "Login UI capturing user credentials and credentials payload to submit to authentication APIs.", stackRole: "Frontend View" },
+                    { name: "ForgotPassword.jsx", isDir: false, desc: "Implements the email password recovery UI, capturing emails and OTP inputs.", stackRole: "Frontend View" },
+                    { name: "Dashboard.jsx", isDir: false, desc: "Student dashboard rendering Recharts analytical data widgets.", stackRole: "Frontend View" }
+                  ]
+                },
+                { name: "App.jsx", isDir: false, desc: "Root component defining global client routes, layouts, and Context Provider wrappers.", stackRole: "Frontend Root Router" }
+              ]
+            },
+            { name: "package.json", isDir: false, desc: "Declares frontend package dependencies (React, Recharts, Socket.io-client) and dev commands.", stackRole: "Config Manifest" }
+          ]
+        },
+        {
+          name: "server",
+          isDir: true,
+          desc: "Node.js and Express backend server handling routes, database CRUD, and socket triggers.",
+          children: [
+            {
+              name: "controllers",
+              isDir: true,
+              desc: "Route handler functions containing business logic and database operations.",
+              children: [
+                { name: "authController.js", isDir: false, desc: "Implements authentication endpoints: verifying logins, generating JWTs, and running OTP password reset flows.", stackRole: "Backend Controller" },
+                { name: "requestController.js", isDir: false, desc: "Manages approval logs. Writes records to MongoDB and pushes real-time socket events.", stackRole: "Backend Controller" }
+              ]
+            },
+            {
+              name: "middleware",
+              isDir: true,
+              desc: "Custom Express middleware filters running before route handlers.",
+              children: [
+                { name: "authMiddleware.js", isDir: false, desc: "Includes verifyToken (verifies Bearer header JWT) and authorize (guards routes based on roles).", stackRole: "Backend Middleware" }
+              ]
+            },
+            {
+              name: "models",
+              isDir: true,
+              desc: "Mongoose schema classes defining data structures in MongoDB.",
+              children: [
+                { name: "User.js", isDir: false, desc: "User database schema. Contains a pre-save hook to hash password fields using bcrypt.", stackRole: "Backend Model" },
+                { name: "Request.js", isDir: false, desc: "Stores teacher requests, payload details, target references, and status flags.", stackRole: "Backend Model" }
+              ]
+            },
+            {
+              name: "socket",
+              isDir: true,
+              desc: "Socket.IO event managers.",
+              children: [
+                { name: "socketHandler.js", isDir: false, desc: "Listens for socket connections, verifies handshake tokens, and maps connections into rooms.", stackRole: "Backend Socket Handler" }
+              ]
+            },
+            { name: "index.js", isDir: false, desc: "Backend entry point. Connects to MongoDB, starts the HTTP server, and initializes Express and Socket.IO.", stackRole: "Backend Entry Point" }
+          ]
+        }
+      ]
+    };
+
+    // ----------------------------------------------------
+    // GLOSSARY DATA
+    // ----------------------------------------------------
+    const GLOSSARY_TERMS = [
+      { name: "JWT", def: "JSON Web Token. Compact, self-contained method for securely transmitting session information between client and server as a JSON object, cryptographically signed." },
+      { name: "CORS", def: "Cross-Origin Resource Sharing. Browser-enforced security restricting a web app from reading API responses from a different origin (port/domain) unless the server permits it." },
+      { name: "Middleware", def: "Express function block executing between receiving a request and returning a response. Used for auth checks, parsing bodies, and logging errors." },
+      { name: "bcryptjs", def: "Library used for password security. Salting and hashing credentials irreversibly before they are written to the database." },
+      { name: "WebSockets", def: "Network protocol allowing two-way persistent full-duplex TCP communication channels over a single network stream." },
+      { name: "Socket.IO Rooms", def: "Virtual channels inside the Socket.IO server. Sockets join rooms using `.join()`, allowing server messages to be targeted to specific subsets of clients." },
+      { name: "Axios Interceptor", def: "A global hook in Axios. Responds to API errors (like 401 Unauthorized) to silently refresh tokens and retry the original request." },
+      { name: "HttpOnly Cookie", def: "Cookie parameter blocking client-side JavaScript access. Crucial for storing JWT refresh tokens to defend against XSS theft." },
+      { name: "MongoDB", def: "NoSQL document database storing records in dynamic BSON (Binary JSON) documents. Ideal for flexible and polymorphic user schemas." },
+      { name: "Mongoose ODM", def: "Object-Document Mapper for MongoDB, introducing validations, data relationship populating, schemas, and event hooks on Node.js." },
+      { name: "Nodemailer", def: "Node.js package used to send emails using SMTP servers, implemented in EduSync to dispatch password reset verification OTPs." },
+      { name: "Vite Proxy", def: "Local configuration forwarding frontend API calls from the client port (5173) to the backend port (5000) to bypass CORS issues during development." }
+    ];
+
+    // ----------------------------------------------------
+    // STATE VARIABLES
+    // ----------------------------------------------------
+    let activeTab = 'study-guide';
+    let masteredQuestions = JSON.parse(localStorage.getItem('viva_mastered') || '{}');
+    let expandedAnswers = {};
+
+    // Simulator State
+    let quizActive = false;
+    let quizQuestions = [];
+    let quizIndex = 0;
+    let quizScores = {};
+    let quizRevealed = false;
+
+    // Visual Flow State
+    let selectedFlow = 'auth';
+    let flowStepIndex = 0;
+
+    const authFlowSteps = [
+      { title: "1. Login Credentials", desc: "User submits credentials. The backend checks verification in DB against bcrypt hash. If valid, server signs JWTs.", activeRole: "Client -> Server" },
+      { title: "2. Token Allocation", desc: "Server issues access token (placed in JSON response body) and refresh token (placed inside an HttpOnly cookie). User dashboard loads.", activeRole: "Server -> Client" },
+      { title: "3. API Execution", desc: "Client sends access token inside Authorization headers (Bearer format) for data requests. Express middleware verifyToken authorizes it.", activeRole: "Client -> API" },
+      { title: "4. Token Expiration", desc: "After 15 minutes, access token expires. Client calls an API; Express verifies and returns a 401 Unauthorized payload.", activeRole: "API -> Client (401)" },
+      { title: "5. Intercept & Refresh", desc: "Axios response interceptor pauses the error, triggers request to /auth/refresh with HttpOnly cookie automatically. Express signs a fresh access token.", activeRole: "Client -> /auth/refresh" },
+      { title: "6. Request Re-attempt", desc: "Axios updates Authorization header, retries original failed API request. Seamless restore occurs with zero page redirects.", activeRole: "Client -> API (Retry)" }
+    ];
+
+    const socketFlowSteps = [
+      { title: "1. Client Connection", desc: "Client logs in. SocketProvider context reads token, establishing WebSocket connection and sending token in auth handshake payload.", activeRole: "React Client (io())" },
+      { title: "2. Server Handshake", desc: "socketHandler.js intercepts connection, validates token using JWT secrets, queries Mongoose, and links user details to socket connection.", activeRole: "Express Server" },
+      { title: "3. Room Mapping", desc: "Connected socket joins user-specific room (user:id) and role channels (admins, teachers, students, batch:CSE-3). Connection logged.", activeRole: "Socket.join()" },
+      { title: "4. Request Creation", desc: "Teacher issues a circular request. Request saves in MongoDB. Request controller retrieves socket server instance via app.get('io').", activeRole: "Teacher Client -> API" },
+      { title: "5. Admin Notification", desc: "Controller targets the 'admins' room: io.to('admins').emit('new_request', request). Admins see notification pop up instantly.", activeRole: "Socket.io Broadcast" },
+      { title: "6. Approval Broadcast", desc: "Admin approves request. Server writes Circular document and broadcasts new_circular event to students or specific batch room. Students receive alarm.", activeRole: "Socket.io Targeted Broadcast" }
+    ];
+
+    const resetFlowSteps = [
+      { title: "1. Forgot Trigger", desc: "User inputs email at /forgot-password. Axios submits request to backend authController.js `/forgot-password` endpoint.", activeRole: "Client -> Server (POST)" },
+      { title: "2. OTP Generation", desc: "Server verifies email exists, generates a 6-digit random code, and caches `{ otp, expiresAt }` in an in-memory Map keyed by email.", activeRole: "Express Server Map" },
+      { title: "3. Nodemailer Dispatch", desc: "Server uses Nodemailer to send email to the user containing the OTP, setting a 10-minute expiry (TTL) in memory.", activeRole: "Nodemailer SMTP" },
+      { title: "4. OTP Input", desc: "User enters email, OTP, and new password. Client posts parameters to `/auth/reset-password` API.", activeRole: "Client -> Server (POST)" },
+      { title: "5. Code Validation", desc: "Server retrieves OTP from Map. Checks presence, confirms expiry is in future, and evaluates code equality. Rejects if invalid.", activeRole: "Express Server Validation" },
+      { title: "6. Database Crypt Save", desc: "If valid, server fetches User document, assigns new password, and saves it. User pre-save hook runs bcrypt, hashing the password before database write.", activeRole: "Mongoose pre-save -> MongoDB" }
+    ];
+
+    // ----------------------------------------------------
+    // INITIALIZATION & TABS
+    // ----------------------------------------------------
+    window.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.total-q-count').forEach(el => el.textContent = VIVA_QUESTIONS.length);
+      updateMasteryStats();
+      renderQuestions();
+      renderDirectoryTree();
+      renderGlossary();
+      switchFlow('auth');
+    });
+
+    function switchTab(tabId) {
+      activeTab = tabId;
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.className = "tab-btn flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 cursor-pointer text-slate-400 hover:text-slate-200 hover:bg-white/5 border border-transparent";
+      });
+      document.getElementById('btn-' + tabId).className = "tab-btn flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 cursor-pointer bg-blue-600/20 text-blue-400 border border-blue-500/30";
+      
+      document.querySelectorAll('.tab-content').forEach(section => {
+        section.classList.add('hidden');
+      });
+      document.getElementById('tab-content-' + tabId).classList.remove('hidden');
+    }
+
+    function updateMasteryStats() {
+      const count = Object.keys(masteredQuestions).filter(k => masteredQuestions[k]).length;
+      document.getElementById('mastered-count').textContent = count;
+      const percent = Math.round((count / VIVA_QUESTIONS.length) * 100);
+      document.getElementById('mastery-progress').style.width = percent + '%';
+    }
+
+    function toggleMastery(qId) {
+      masteredQuestions[qId] = !masteredQuestions[qId];
+      localStorage.setItem('viva_mastered', JSON.stringify(masteredQuestions));
+      updateMasteryStats();
+      
+      // Update UI button state
+      const btn = document.getElementById(`master-btn-${qId}`);
+      if (btn) {
+        if (masteredQuestions[qId]) {
+          btn.innerHTML = `<svg class="w-3 h-3 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Mastered`;
+          btn.className = "text-[10px] font-bold px-2.5 py-1 rounded border border-emerald-500/30 bg-emerald-500/20 text-emerald-400 flex items-center gap-1 active-press cursor-pointer transition-all";
+        } else {
+          btn.innerHTML = `<svg class="w-3 h-3 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Learn`;
+          btn.className = "text-[10px] font-bold px-2.5 py-1 rounded border border-white/5 bg-white/5 text-slate-400 hover:text-white flex items-center gap-1 active-press cursor-pointer transition-all";
+        }
+      }
+    }
+
+    // ----------------------------------------------------
+    // TAB 1: STUDY GUIDE RENDER
+    // ----------------------------------------------------
+    function renderQuestions() {
+      const container = document.getElementById('guide-questions-container');
+      const catFilter = document.getElementById('guide-filter-category').value;
+      const searchVal = document.getElementById('guide-search').value.toLowerCase();
+      
+      container.innerHTML = "";
+      
+      const filtered = VIVA_QUESTIONS.filter(q => {
+        const matchCat = catFilter === 'All' || q.category === catFilter;
+        const matchSearch = q.question.toLowerCase().includes(searchVal) || q.answer.toLowerCase().includes(searchVal);
+        return matchCat && matchSearch;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="glass-panel p-10 text-center rounded-2xl border border-white/5">
+            <p class="text-slate-400 text-sm">No questions found matching your search filters.</p>
+          </div>
+        `;
+        return;
+      }
+
+      filtered.forEach((q, idx) => {
+        const isMastered = masteredQuestions[q.id] || false;
+        const showAnswer = expandedAnswers[q.id] !== false; // Default true (expanded)
+
+        const card = document.createElement('div');
+        card.className = `glass-panel p-5 rounded-2xl border hover:border-white/10 transition-all space-y-3 ${
+          isMastered ? 'border-emerald-500/20 bg-emerald-950/5' : 'border-white/5'
+        }`;
+        
+        card.innerHTML = `
+          <div class="flex justify-between items-center">
+            <span class="text-[10px] bg-blue-500/10 text-blue-400 border border-blue-500/15 px-2.5 py-0.5 rounded-full font-semibold">
+              Q${idx + 1} • ${q.category}
+            </span>
+            <div class="flex gap-2">
+              <button onclick="toggleAnswerCollapse('${q.id}')" class="text-[10px] font-bold px-2 py-1 rounded bg-white/5 border border-white/5 text-slate-400 hover:text-white cursor-pointer active-press">
+                ${showAnswer ? 'Hide Answer' : 'Show Answer'}
+              </button>
+              <button id="master-btn-${q.id}" onclick="toggleMastery('${q.id}')" class="text-[10px] font-bold px-2.5 py-1 rounded border flex items-center gap-1 active-press cursor-pointer transition-all ${
+                isMastered 
+                  ? 'border-emerald-500/30 bg-emerald-500/20 text-emerald-400' 
+                  : 'border-white/5 bg-white/5 text-slate-400 hover:text-white'
+              }">
+                <svg class="w-3 h-3 ${isMastered ? 'text-emerald-400' : 'text-slate-400'}" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                ${isMastered ? 'Mastered' : 'Learn'}
+              </button>
+            </div>
+          </div>
+          <h4 class="text-base font-bold text-white">${q.question}</h4>
+          <div id="answer-box-${q.id}" class="${showAnswer ? '' : 'hidden'} bg-black/20 p-4 rounded-xl border border-white/5 space-y-1">
+            <p class="text-xs text-slate-400 font-mono font-semibold uppercase tracking-wider">Viva Explanation Answer:</p>
+            <p class="text-sm text-slate-200 leading-relaxed whitespace-pre-line">${q.answer}</p>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function filterQuestions() {
+      renderQuestions();
+    }
+
+    // Toggle collapse functions
+    function toggleAnswerCollapse(qId) {
+      if (expandedAnswers[qId] === false) {
+        expandedAnswers[qId] = true;
+      } else {
+        expandedAnswers[qId] = false;
+      }
+      renderQuestions();
+    }
+
+    function toggleAllAnswers(expand) {
+      VIVA_QUESTIONS.forEach(q => {
+        expandedAnswers[q.id] = expand;
+      });
+      renderQuestions();
+    }
+
+    // ----------------------------------------------------
+    // TAB 2: PROJECT CODE STRUCTURE
+    // ----------------------------------------------------
+    function renderDirectoryTree() {
+      const listContainer = document.getElementById('directory-tree-list');
+      listContainer.innerHTML = "";
+      
+      const renderNode = (node, depth = 0, path = "") => {
+        const item = document.createElement('div');
+        item.style.paddingLeft = (depth * 16) + 'px';
+        item.className = "flex items-center gap-1.5 py-0.5 hover:bg-white/5 rounded cursor-pointer transition-all";
+        
+        const folderIcon = `<svg class="w-3.5 h-3.5 text-indigo-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>`;
+        const fileIcon = `<svg class="w-3.5 h-3.5 text-blue-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>`;
+        
+        item.innerHTML = `
+          <span>${node.isDir ? folderIcon : fileIcon}</span>
+          <span class="text-slate-300 font-mono select-none">${node.name}</span>
+        `;
+        
+        item.onclick = (e) => {
+          e.stopPropagation();
+          showNodeDetails(node);
+        };
+        
+        listContainer.appendChild(item);
+        
+        if (node.isDir && node.children) {
+          node.children.forEach(child => {
+            renderNode(child, depth + 1, path + "/" + node.name);
+          });
+        }
+      };
+
+      renderNode(PROJECT_TREE);
+    }
+
+    function showNodeDetails(node) {
+      const panel = document.getElementById('tree-details-panel');
+      
+      const roleBadge = node.stackRole 
+        ? `<span class="bg-blue-500/10 text-blue-400 text-xs px-2.5 py-0.5 rounded border border-blue-500/15 font-semibold font-mono uppercase">${node.stackRole}</span>`
+        : "";
+
+      panel.innerHTML = `
+        <div class="space-y-6 animation-fadeIn">
+          <div class="flex justify-between items-start border-b border-white/5 pb-4">
+            <div>
+              <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                ${node.isDir 
+                  ? `<svg class="w-5 h-5 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>` 
+                  : `<svg class="w-5 h-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>`
+                }
+                ${node.name}
+              </h3>
+              <p class="text-[11px] font-mono text-slate-500 mt-1">${node.isDir ? 'Directory node' : 'Source file node'}</p>
+            </div>
+            ${roleBadge}
+          </div>
+
+          <div class="space-y-4">
+            <div>
+              <h4 class="text-xs uppercase text-slate-400 font-bold tracking-wider mb-1">Stack Responsibility:</h4>
+              <p class="text-sm text-slate-200 leading-relaxed">${node.desc}</p>
+            </div>
+
+            ${!node.isDir ? `
+              <div class="p-4 bg-white/5 rounded-xl border border-white/5 text-xs text-slate-300 leading-relaxed space-y-2">
+                <span class="font-bold text-blue-400 block font-mono">STACK INTEGRATION FLOW:</span>
+                <p>
+                  ${node.name === 'axios.js' ? 'Frontend Axios interceptor checks incoming REST API payloads. If code 401 is matched, it calls backend /auth/refresh router silently before retrying page query.' : ''}
+                  ${node.name === 'AuthContext.jsx' ? 'Loads user metadata on login, saves JWT bearer keys, and wraps protected frontend route components so they can react to session states.' : ''}
+                  ${node.name === 'SocketContext.jsx' ? 'Initializes websocket connections after login, passes token in handshakes, and listens for real-time notifications.' : ''}
+                  ${node.name === 'authController.js' ? 'Processes passwords, salts and verifies against bcrypt DB entries. Handles reset Map stores and emails OTPs via nodemailer SMTP.' : ''}
+                  ${node.name === 'requestController.js' ? 'Saves teacher attendance/circular updates in database. Automatically fetches socket server instance and calls io.to().emit() events to real-time rooms.' : ''}
+                  ${node.name === 'authMiddleware.js' ? 'Decodes Bearer header keys, queries database user IDs, and authorize specific role scopes before controllers process API calls.' : ''}
+                  ${node.name === 'User.js' ? 'Defines MongoDB User document blueprint (attributes, validations). Compiles database hook checks to hash user passwords automatically on write.' : ''}
+                  ${node.name === 'socketHandler.js' ? 'Intercepts incoming sockets, decodes JWT payload to verify login, and partitions connection sockets in user-scoped or batch rooms.' : ''}
+                  ${node.name === 'index.js' ? 'Initializes Express APIs, starts Mongoose database, registers REST routers, and creates HTTP wrapper servers to run Socket.IO websockets.' : ''}
+                </p>
+              </div>
+            ` : ''}
+          </div>
+        </div>
+
+        <p class="text-[10.5px] text-slate-500 border-t border-white/5 pt-4 mt-6">
+          Tip: If asked 'Where do you do token validation?' point to authMiddleware.js on Express APIs and socketHandler.js on Socket connections.
+        </p>
+      `;
+    }
+
+    // ----------------------------------------------------
+    // TAB 3: VISUAL TIMELINES
+    // ----------------------------------------------------
+    function switchFlow(flowId) {
+      selectedFlow = flowId;
+      flowStepIndex = 0;
+      
+      document.querySelectorAll('.flow-tab-btn').forEach(btn => {
+        btn.className = "flow-tab-btn px-4 py-2 rounded-lg text-sm font-semibold transition-all cursor-pointer text-slate-400 hover:text-slate-200";
+      });
+      document.getElementById('flow-btn-' + flowId).className = "flow-tab-btn px-4 py-2 rounded-lg text-sm font-semibold transition-all cursor-pointer bg-blue-600/10 text-blue-400 border border-blue-500/20";
+      
+      renderFlowTimeline();
+    }
+
+    function renderFlowTimeline() {
+      const timelineContainer = document.getElementById('flow-timeline-steps');
+      const steps = selectedFlow === 'auth' ? authFlowSteps : (selectedFlow === 'socket' ? socketFlowSteps : resetFlowSteps);
+      
+      timelineContainer.innerHTML = "";
+      
+      steps.forEach((step, idx) => {
+        const active = idx === flowStepIndex;
+        const btn = document.createElement('button');
+        btn.onclick = () => {
+          flowStepIndex = idx;
+          renderFlowTimeline();
+        };
+        btn.className = `w-full text-left p-4 rounded-xl border transition-all cursor-pointer flex items-center gap-4 ${
+          active 
+            ? 'bg-blue-600/10 border-blue-500/30 text-white shadow-[0_0_10px_rgba(59,130,246,0.05)]' 
+            : 'bg-white/[0.02] border-white/5 text-slate-400 hover:text-slate-200 hover:bg-white/5'
+        }`;
+        
+        btn.innerHTML = `
+          <span class="h-6 w-6 rounded-full font-mono text-xs flex items-center justify-center shrink-0 border ${
+            active 
+              ? 'bg-blue-500/20 border-blue-400 text-blue-300 font-bold' 
+              : 'bg-white/10 border-white/10 text-slate-400'
+          }">
+            ${idx + 1}
+          </span>
+          <div>
+            <p class="text-sm font-bold ${active ? 'text-white' : 'text-slate-300'}">${step.title}</p>
+            <p class="text-[10px] text-slate-500 mt-0.5">${step.activeRole}</p>
+          </div>
+        `;
+        timelineContainer.appendChild(btn);
+      });
+
+      const detailContainer = document.getElementById('flow-detail-panel');
+      const currentStep = steps[flowStepIndex];
+      
+      detailContainer.innerHTML = `
+        <div class="flex justify-between items-center border-b border-white/5 pb-3">
+          <h4 class="text-sm font-bold text-white flex items-center gap-1.5">
+            <svg class="w-4 h-4 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Action Detail Panel
+          </h4>
+          <span class="text-xs font-mono text-slate-500 bg-white/5 px-2.5 py-0.5 rounded border border-white/5">
+            Step ${flowStepIndex + 1} of 6
+          </span>
+        </div>
+
+        <div class="space-y-4 animation-fadeIn">
+          <div class="p-4 bg-blue-600/5 rounded-xl border border-blue-500/15">
+            <span class="text-[10px] uppercase font-bold tracking-widest text-blue-400 font-mono">${currentStep.activeRole}</span>
+            <h3 class="text-lg font-bold text-white mt-1">${currentStep.title}</h3>
+            <p class="text-sm text-slate-300 leading-relaxed mt-2">${currentStep.desc}</p>
+          </div>
+
+          <div class="bg-black/20 p-4 rounded-xl border border-white/5 flex flex-col items-center justify-center min-h-[140px] relative overflow-hidden">
+            <div class="flex items-center gap-6 justify-between w-full max-w-sm z-10 relative">
+              <div class="p-2.5 rounded-lg border text-center transition-all ${
+                currentStep.activeRole.includes('Client') || currentStep.activeRole.includes('React') || currentStep.activeRole.includes('Forgot')
+                  ? 'bg-blue-600/20 border-blue-500 text-white font-bold'
+                  : 'bg-white/5 border-white/5 text-slate-500'
+              }">
+                <span class="text-[10px] font-mono">React Client</span>
+              </div>
+              <div class="flex-1 flex flex-col items-center justify-center">
+                <div class="w-full h-0.5 bg-white/10 relative">
+                  <div class="absolute top-1/2 left-0 h-1.5 w-1.5 rounded-full bg-blue-400 -translate-y-1/2 animate-ping" style="left: 50%"></div>
+                </div>
+              </div>
+              <div class="p-2.5 rounded-lg border text-center transition-all ${
+                currentStep.activeRole.includes('Server') || currentStep.activeRole.includes('API') || currentStep.activeRole.includes('Express') || currentStep.activeRole.includes('Nodemailer')
+                  ? 'bg-indigo-600/20 border-indigo-500 text-white font-bold'
+                  : 'bg-white/5 border-white/5 text-slate-500'
+              }">
+                <span class="text-[10px] font-mono">Node Backend</span>
+              </div>
+            </div>
+            <div class="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#000_1px,transparent_1px),linear-gradient(to_bottom,#000_1px,transparent_1px)] bg-[size:10px_10px]"></div>
+          </div>
+        </div>
+
+        <div class="flex justify-between items-center pt-4 border-t border-white/5">
+          <button onclick="prevFlowStep()" ${flowStepIndex === 0 ? 'disabled' : ''} class="px-3.5 py-1.5 rounded-lg border border-white/10 text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/5 disabled:opacity-30 disabled:pointer-events-none transition-all cursor-pointer">
+            Previous Step
+          </button>
+          <button onclick="nextFlowStep()" ${flowStepIndex === 5 ? 'disabled' : ''} class="px-4 py-1.5 rounded-lg bg-blue-600 text-xs font-bold text-white hover:bg-blue-500 disabled:opacity-30 disabled:pointer-events-none transition-all cursor-pointer">
+            Next Step
+          </button>
+        </div>
+      `;
+    }
+
+    function prevFlowStep() {
+      if (flowStepIndex > 0) {
+        flowStepIndex--;
+        renderFlowTimeline();
+      }
+    }
+
+    function nextFlowStep() {
+      if (flowStepIndex < 5) {
+        flowStepIndex++;
+        renderFlowTimeline();
+      }
+    }
+
+    // ----------------------------------------------------
+    // TAB 4: MOCK SIMULATOR LOGIC
+    // ----------------------------------------------------
+    function startQuiz() {
+      quizActive = true;
+      quizIndex = 0;
+      quizScores = {};
+      quizRevealed = false;
+      
+      quizQuestions = [...VIVA_QUESTIONS].sort(() => 0.5 - Math.random()).slice(0, 10);
+      
+      document.getElementById('simulator-start-panel').classList.add('hidden');
+      document.getElementById('simulator-results-panel').classList.add('hidden');
+      document.getElementById('simulator-quiz-panel').classList.remove('hidden');
+      
+      renderQuizQuestion();
+    }
+
+    function renderQuizQuestion() {
+      const q = quizQuestions[quizIndex];
+      
+      document.getElementById('quiz-question-index').textContent = quizIndex + 1;
+      document.getElementById('quiz-progress-bar').style.width = ((quizIndex) / 10 * 100) + '%';
+      
+      const scoredCount = Object.keys(quizScores).length;
+      let points = 0;
+      Object.values(quizScores).forEach(score => {
+        if (score === 'good') points += 100;
+        else if (score === 'partial') points += 50;
+      });
+      const confPercent = scoredCount ? Math.round(points / scoredCount) : 0;
+      document.getElementById('quiz-confidence-percent').textContent = confPercent + '%';
+
+      document.getElementById('quiz-category-tag').textContent = q.category;
+      document.getElementById('quiz-question-text').textContent = q.question;
+      
+      document.getElementById('quiz-reveal-box').classList.remove('hidden');
+      document.getElementById('quiz-answer-box').classList.add('hidden');
+      quizRevealed = false;
+    }
+
+    function revealQuizAnswer() {
+      const q = quizQuestions[quizIndex];
+      document.getElementById('quiz-reveal-box').classList.add('hidden');
+      
+      const answerBox = document.getElementById('quiz-answer-box');
+      answerBox.classList.remove('hidden');
+      document.getElementById('quiz-answer-text').textContent = q.answer;
+      quizRevealed = true;
+    }
+
+    function gradeQuizQuestion(score) {
+      const q = quizQuestions[quizIndex];
+      quizScores[q.id] = score;
+      
+      if (quizIndex < 9) {
+        quizIndex++;
+        renderQuizQuestion();
+      } else {
+        renderQuizResults();
+      }
+    }
+
+    function renderQuizResults() {
+      document.getElementById('simulator-quiz-panel').classList.add('hidden');
+      const resultsPanel = document.getElementById('simulator-results-panel');
+      resultsPanel.classList.remove('hidden');
+      
+      let good = 0;
+      let partial = 0;
+      let poor = 0;
+      
+      Object.values(quizScores).forEach(score => {
+        if (score === 'good') good++;
+        else if (score === 'partial') partial++;
+        else if (score === 'poor') poor++;
+      });
+
+      const totalScore = good * 100 + partial * 50;
+      const finalPercent = Math.round(totalScore / 10);
+      
+      document.getElementById('quiz-final-percent').textContent = finalPercent + '%';
+      document.getElementById('quiz-count-good').textContent = good;
+      document.getElementById('quiz-count-partial').textContent = partial;
+      document.getElementById('quiz-count-poor').textContent = poor;
+
+      const catResults = {};
+      quizQuestions.forEach(q => {
+        const score = quizScores[q.id];
+        if (!catResults[q.category]) {
+          catResults[q.category] = { asked: 0, points: 0 };
+        }
+        catResults[q.category].asked += 1;
+        if (score === 'good') catResults[q.category].points += 1;
+        else if (score === 'partial') catResults[q.category].points += 0.5;
+      });
+
+      const breakdownContainer = document.getElementById('quiz-category-breakdown');
+      breakdownContainer.innerHTML = "";
+
+      Object.entries(catResults).forEach(([cat, data]) => {
+        const percent = Math.round((data.points / data.asked) * 100);
+        const row = document.createElement('div');
+        row.className = "p-3 bg-white/5 rounded-lg border border-white/5 flex items-center justify-between text-xs";
+        row.innerHTML = `
+          <div>
+            <span class="font-bold text-slate-200">${cat}</span>
+            <span class="text-slate-400 ml-1.5">(${data.asked} asked)</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="w-24 bg-white/10 h-2 rounded-full overflow-hidden">
+              <div class="h-full ${percent >= 75 ? 'bg-emerald-500' : (percent >= 50 ? 'bg-amber-500' : 'bg-red-500')}" style="width: ${percent}%"></div>
+            </div>
+            <span class="font-bold text-white w-8 text-right">${percent}%</span>
+          </div>
+        `;
+        breakdownContainer.appendChild(row);
+      });
+    }
+
+    function exitQuiz() {
+      quizActive = false;
+      document.getElementById('simulator-quiz-panel').classList.add('hidden');
+      document.getElementById('simulator-start-panel').classList.remove('hidden');
+    }
+
+    // ----------------------------------------------------
+    // TAB 5: GLOSSARY CHEATSHEET
+    // ----------------------------------------------------
+    function renderGlossary() {
+      const container = document.getElementById('glossary-container');
+      const searchVal = document.getElementById('glossary-search').value.toLowerCase();
+      
+      container.innerHTML = "";
+      
+      const filtered = GLOSSARY_TERMS.filter(t => {
+        return t.name.toLowerCase().includes(searchVal) || t.def.toLowerCase().includes(searchVal);
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="glass-panel p-6 text-center rounded-2xl border border-white/5 col-span-2">
+            <p class="text-slate-400 text-sm">No definitions found.</p>
+          </div>
+        `;
+        return;
+      }
+
+      filtered.forEach(t => {
+        const card = document.createElement('div');
+        card.className = "glass-panel p-4 rounded-xl border border-white/5 flex flex-col justify-between hover:border-blue-500/10 transition-all";
+        card.innerHTML = `
+          <div>
+            <div class="flex justify-between items-center border-b border-white/5 pb-2 mb-2">
+              <h4 class="text-sm font-extrabold text-blue-400 font-mono">${t.name}</h4>
+              <span class="text-[9px] text-slate-500 font-mono">#terminology</span>
+            </div>
+            <p class="text-xs text-slate-300 leading-relaxed">${t.def}</p>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function filterGlossary() {
+      renderGlossary();
+    }
+  </script>
+
+</body>
+</html>

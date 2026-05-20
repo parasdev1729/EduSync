@@ -140,9 +140,19 @@ const Login = () => {
             </div>
 
             <div className="space-y-2">
-              <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] ml-1">
-                Password
-              </label>
+              <div className="flex items-center justify-between ml-1 mr-1">
+                <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">
+                  Password
+                </label>
+                <button
+                  id="forgot-password-link"
+                  type="button"
+                  onClick={() => navigate('/forgot-password')}
+                  className="text-[10px] font-black text-blue-500 hover:text-blue-400 uppercase tracking-widest transition-colors"
+                >
+                  Forgot Password?
+                </button>
+              </div>
               <input
                 type="password"
                 placeholder="••••••••"

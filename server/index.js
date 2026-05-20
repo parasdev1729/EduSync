@@ -2,6 +2,10 @@ const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
 const dotenv = require('dotenv');
+
+// Load environment variables immediately
+dotenv.config();
+
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const connectDB = require('./config/db');
@@ -14,9 +18,6 @@ const activityRoutes = require('./routes/activityRoutes');
 const requestRoutes = require('./routes/requestRoutes');
 const userRoutes = require('./routes/userRoutes');
 const socketHandler = require('./socket/socketHandler');
-
-// Load environment variables
-dotenv.config();
 
 // Connect to Database and Start Server
 const startServer = async () => {

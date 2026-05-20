@@ -1,25 +1,53 @@
-export const generateGoogleCalendarUrl = (classData, day, timeSlot) => {
-  const baseUrl = 'https://www.google.com/calendar/render?action=TEMPLATE';
-  
-  // Mapping days to RRULE format
+export const downloadTimetableICS = (timetable, days, timeSlots) => {
   const dayMap = { 'Mo': 'MO', 'Tu': 'TU', 'We': 'WE', 'Th': 'TH', 'Fr': 'FR' };
+  const startDate = '20260518'; // Monday
   
-  // Hardcoded date for the start of the semester (example: Monday, May 18, 2026)
-  // We'll use a generic start date to establish the recurring pattern
-  const startDate = '20260518'; 
-  const startTime = timeSlot.start.replace(':', '') + '00';
-  const endTime = timeSlot.end.replace(':', '') + '00';
-  
-  const text = encodeURIComponent(`EduSync: ${classData.subject}`);
-  const details = encodeURIComponent(`Teacher: ${classData.teacher}\nRoom: ${classData.room}`);
-  const location = encodeURIComponent(classData.room);
-  
-  // Recurrence rule: Weekly on the specific day
-  const recur = encodeURIComponent(`RRULE:FREQ=WEEKLY;BYDAY=${dayMap[day]}`);
-  
-  // Construct the dates parameter (YYYYMMDDTHHmmSSZ)
-  // Using 'Z' for UTC or omitting it for floating time (user's local)
-  const dates = `${startDate}T${startTime}/${startDate}T${endTime}`;
-  
-  return `${baseUrl}&text=${text}&details=${details}&location=${location}&dates=${dates}&recur=${recur}`;
+  let icsContent = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PROID:-//EduSync//NONSGML Timetable//EN',
+    'CALSCALE:GREGORIAN',
+    'METHOD:PUBLISH'
+  ].join('\r\n') + '\r\n';
+
+  days.forEach(day => {
+    Object.keys(timetable[day]).forEach(slotId => {
+      const classInfo = timetable[day][slotId];
+      const slot = timeSlots.find(s => s.id === parseInt(slotId));
+      
+      if (classInfo && slot) {
+        const startTime = slot.start.replace(':', '') + '00';
+        const endTime = slot.end.replace(':', '') + '00';
+        
+        icsContent += [
+          'BEGIN:VEVENT',
+          `DTSTART;TZID=Asia/Kolkata:${startDate}T${startTime}`,
+          `DTEND;TZID=Asia/Kolkata:${startDate}T${endTime}`,
+          `RRULE:FREQ=WEEKLY;BYDAY=${dayMap[day]}`,
+          `SUMMARY:EduSync: ${classInfo.subject}`,
+          `DESCRIPTION:Teacher: ${classInfo.teacher}\\nRoom: ${classInfo.room}`,
+          `LOCATION:${classInfo.room}`,
+          'STATUS:CONFIRMED',
+          'SEQUENCE:0',
+          'BEGIN:VALARM',
+          'TRIGGER:-PT15M',
+          'DESCRIPTION:Class starting in 15 minutes',
+          'ACTION:DISPLAY',
+          'END:VALARM',
+          'END:VEVENT'
+        ].join('\r\n') + '\r\n';
+      }
+    });
+  });
+
+  icsContent += 'END:VCALENDAR';
+
+  const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+  const link = document.createElement('a');
+  link.href = window.URL.createObjectURL(blob);
+  link.setAttribute('download', 'EduSync_Schedule_G20.ics');
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 };
+
