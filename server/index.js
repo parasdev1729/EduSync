@@ -29,7 +29,8 @@ const startServer = async () => {
 
     const allowedOrigins = [
       'http://localhost:5173',
-      'http://localhost:3000'
+      'http://localhost:3000',
+      'https://edu-sync-prod.vercel.app'
     ];
     if (process.env.CLIENT_URL) {
       allowedOrigins.push(process.env.CLIENT_URL.replace(/\/$/, ''));
@@ -37,10 +38,19 @@ const startServer = async () => {
 
     const corsOptions = {
       origin: (origin, callback) => {
-        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+        if (!origin) {
+          return callback(null, true);
+        }
+        const cleanOrigin = origin.replace(/\/$/, '');
+        const isAllowed = allowedOrigins.indexOf(cleanOrigin) !== -1 ||
+                          cleanOrigin.endsWith('.vercel.app') ||
+                          cleanOrigin.startsWith('http://localhost:') ||
+                          cleanOrigin.startsWith('http://127.0.0.1:');
+
+        if (isAllowed) {
           callback(null, true);
         } else {
-          callback(new Error('Not allowed by CORS'));
+          callback(null, false);
         }
       },
       credentials: true
