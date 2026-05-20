@@ -40,7 +40,7 @@ const login = async (req, res) => {
             res.cookie('refreshToken', refreshToken, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
-                sameSite: 'Strict',
+                sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'Lax',
                 maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
             });
 
@@ -89,7 +89,7 @@ const logout = async (req, res) => {
     res.cookie('refreshToken', '', {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'Strict',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'Lax',
         expires: new Date(0)
     });
     res.status(200).json({ message: 'Logged out successfully' });
