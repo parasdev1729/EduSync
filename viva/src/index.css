@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-[#030712] text-slate-100 min-h-screen selection:bg-blue-500/30;
+  }
+}
+
+.bg-grid {
+  background-image: radial-gradient(rgba(59, 130, 246, 0.08) 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+}
+
+.glass-panel {
+  @apply bg-gray-950/65 backdrop-blur-xl border border-white/5 shadow-2xl;
+}
+
+.glass-card {
+  @apply bg-gray-900/30 backdrop-blur-md border border-white/5 shadow-lg transition-all duration-300;
+}
+
+.glass-card:hover {
+  @apply border-blue-500/25 bg-gray-900/50 -translate-y-0.5 shadow-blue-500/5;
+}
+
+.mastered-glow {
+  border-color: rgba(16, 185, 129, 0.3) !important;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.04) 0%, rgba(17, 24, 39, 0.85) 100%) !important;
+  box-shadow: 0 10px 30px -10px rgba(16, 185, 129, 0.2) !important;
+}
+
+.active-press:active {
+  transform: scale(0.98);
+}
+
+/* Custom Webkit scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(3, 7, 18, 0.5);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 9999px;
+  border: 2px solid #030712;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Traveling dot animations for Architecture Loops diagram */
+@keyframes travelLeft {
+  0% {
+    left: 85%;
+  }
+  100% {
+    left: 5%;
+  }
+}
+
+@keyframes travelRight {
+  0% {
+    left: 5%;
+  }
+  100% {
+    left: 85%;
+  }
+}
+
