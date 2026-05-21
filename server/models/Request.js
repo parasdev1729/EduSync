@@ -6,7 +6,10 @@ const requestSchema = new mongoose.Schema({
     status: { type: String, enum: ['pending', 'approved', 'rejected'], default: 'pending' },
     payload: { type: Object, required: true },
     adminComment: { type: String },
-    targetId: { type: mongoose.Schema.Types.ObjectId }
+    targetId: { type: mongoose.Schema.Types.ObjectId },
+    pdfData: { type: Buffer },
+    pdfMimeType: { type: String },
+    pdfOriginalName: { type: String }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Request', requestSchema);

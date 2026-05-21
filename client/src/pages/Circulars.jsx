@@ -23,6 +23,20 @@ const Circulars = () => {
     fetchCirculars();
   }, []);
 
+  const handleViewPdf = async (circularId) => {
+    try {
+      const response = await api.get(`/circulars/${circularId}/pdf`, {
+        responseType: 'blob'
+      });
+      const blob = new Blob([response.data], { type: 'application/pdf' });
+      const url = window.URL.createObjectURL(blob);
+      window.open(url, '_blank');
+    } catch (error) {
+      console.error('Error downloading pdf:', error);
+      alert('Failed to view PDF');
+    }
+  };
+
   useEffect(() => {
     if (!loading && location.state?.highlightId && circularRefs.current[location.state.highlightId]) {
       circularRefs.current[location.state.highlightId].scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -79,23 +93,31 @@ const Circulars = () => {
                   </div>
                 </div>
               </div>
-              <button 
-                onClick={() => {
-                  if (circular.fileUrl) {
-                    window.open(circular.fileUrl, '_blank');
-                  } else {
-                    alert('No document attached to this circular.');
-                  }
-                }}
-                className={`flex items-center justify-center px-4 py-2 rounded-lg transition-all text-sm font-semibold border cursor-pointer whitespace-nowrap ${
-                  circular.fileUrl 
-                  ? 'bg-slate-800 text-slate-200 hover:bg-blue-600 hover:text-white border-slate-700' 
-                  : 'bg-slate-900/50 text-slate-600 border-slate-800 cursor-not-allowed'
-                }`}
-              >
-                <Download size={16} className="mr-2" />
-                {circular.fileUrl ? 'View Document' : 'No Document'}
-              </button>
+              <div className="flex flex-col sm:flex-row gap-2 md:self-center">
+                {circular.pdfMimeType && (
+                  <button 
+                    onClick={() => handleViewPdf(circular._id)}
+                    className="flex items-center justify-center px-4 py-2 rounded-lg transition-all text-sm font-semibold border cursor-pointer whitespace-nowrap bg-blue-600 text-white hover:bg-blue-500 border-transparent shadow-lg shadow-blue-500/25"
+                  >
+                    <Download size={16} className="mr-2" />
+                    View PDF
+                  </button>
+                )}
+                {circular.fileUrl && (
+                  <button 
+                    onClick={() => window.open(circular.fileUrl, '_blank')}
+                    className="flex items-center justify-center px-4 py-2 rounded-lg transition-all text-sm font-semibold border cursor-pointer whitespace-nowrap bg-slate-800 text-slate-200 hover:bg-slate-700 border-slate-700"
+                  >
+                    <ExternalLink size={16} className="mr-2" />
+                    Link
+                  </button>
+                )}
+                {!circular.pdfMimeType && !circular.fileUrl && (
+                  <span className="flex items-center justify-center px-4 py-2 rounded-lg text-sm font-semibold border bg-slate-900/50 text-slate-600 border-slate-800 cursor-not-allowed whitespace-nowrap">
+                    No Document
+                  </span>
+                )}
+              </div>
             </div>
           </div>
         )) : (

@@ -13,6 +13,15 @@ const circularSchema = new mongoose.Schema({
         type: String,
         default: ''
     },
+    pdfData: {
+        type: Buffer
+    },
+    pdfMimeType: {
+        type: String
+    },
+    pdfOriginalName: {
+        type: String
+    },
     issuedBy: {
         type: String,
         required: true

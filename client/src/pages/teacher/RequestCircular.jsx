@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Send, Loader2, CheckCircle2 } from 'lucide-react';
+import { Send, Loader2, CheckCircle2, Upload, FileText, X } from 'lucide-react';
 import api from '../../api/axios';
 import { useAuth } from '../../context/AuthContext';
 
@@ -11,6 +11,8 @@ const RequestCircular = () => {
     batch: '',
     fileUrl: ''
   });
+  const [pdfFile, setPdfFile] = useState(null);
+  const [dragActive, setDragActive] = useState(false);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
@@ -20,6 +22,46 @@ const RequestCircular = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  const handleDrag = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === "dragenter" || e.type === "dragover") {
+      setDragActive(true);
+    } else if (e.type === "dragleave") {
+      setDragActive(false);
+    }
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+    
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      const file = e.dataTransfer.files[0];
+      if (file.type === "application/pdf") {
+        setPdfFile(file);
+      } else {
+        setError("Only PDF files are allowed!");
+      }
+    }
+  };
+
+  const handleFileChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      if (file.type === "application/pdf") {
+        setPdfFile(file);
+      } else {
+        setError("Only PDF files are allowed!");
+      }
+    }
+  };
+
+  const removeFile = () => {
+    setPdfFile(null);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -27,15 +69,26 @@ const RequestCircular = () => {
     setSuccess(false);
 
     try {
-      await api.post('/requests', {
-        type: 'circular',
-        payload: {
-          ...formData,
-          issuedBy: user?.name
+      const submitData = new FormData();
+      submitData.append('type', 'circular');
+      submitData.append('payload', JSON.stringify({
+        ...formData,
+        issuedBy: user?.name
+      }));
+      
+      if (pdfFile) {
+        submitData.append('pdf', pdfFile);
+      }
+
+      await api.post('/requests', submitData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
         }
       });
+
       setSuccess(true);
       setFormData({ title: '', description: '', batch: '', fileUrl: '' });
+      setPdfFile(null);
       setTimeout(() => setSuccess(false), 5000);
     } catch (err) {
       console.error(err);
@@ -108,7 +161,7 @@ const RequestCircular = () => {
             </div>
             
             <div className="space-y-2">
-              <label className="text-xs font-black text-slate-400 uppercase tracking-widest">Attachment URL (Optional)</label>
+              <label className="text-xs font-black text-slate-400 uppercase tracking-widest">Attachment Link (Optional)</label>
               <input 
                 type="url" 
                 name="fileUrl"
@@ -117,6 +170,69 @@ const RequestCircular = () => {
                 className="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
                 placeholder="https://..."
               />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-xs font-black text-slate-400 uppercase tracking-widest">Upload PDF Document (Optional)</label>
+            <div 
+              className={`relative border-2 border-dashed rounded-2xl p-6 transition-all flex flex-col items-center justify-center text-center cursor-pointer ${
+                dragActive 
+                  ? 'border-blue-500 bg-blue-500/10' 
+                  : pdfFile 
+                    ? 'border-emerald-500/50 bg-emerald-500/5' 
+                    : 'border-white/10 bg-black/20 hover:border-white/20 hover:bg-black/30'
+              }`}
+              onDragEnter={handleDrag}
+              onDragOver={handleDrag}
+              onDragLeave={handleDrag}
+              onDrop={handleDrop}
+            >
+              <input 
+                type="file"
+                accept="application/pdf"
+                onChange={handleFileChange}
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+              />
+              
+              {pdfFile ? (
+                <div className="flex flex-col items-center space-y-3 z-20">
+                  <div className="p-3 bg-emerald-500/10 rounded-xl text-emerald-400">
+                    <FileText size={32} />
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold text-white max-w-xs truncate">{pdfFile.name}</p>
+                    <p className="text-[11px] text-slate-400 font-semibold mt-0.5">
+                      {(pdfFile.size / 1024 / 1024).toFixed(2)} MB
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      removeFile();
+                    }}
+                    className="flex items-center text-xs font-bold text-rose-400 bg-rose-500/10 hover:bg-rose-500/20 px-3 py-1.5 rounded-lg transition-colors cursor-pointer"
+                  >
+                    <X size={14} className="mr-1" />
+                    Remove File
+                  </button>
+                </div>
+              ) : (
+                <div className="flex flex-col items-center space-y-3 pointer-events-none">
+                  <div className={`p-3 rounded-xl transition-colors ${
+                    dragActive ? 'bg-blue-500/20 text-blue-400' : 'bg-white/5 text-slate-400'
+                  }`}>
+                    <Upload size={28} />
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold text-white">Drag & drop your PDF here or click to browse</p>
+                    <p className="text-[10px] text-slate-500 font-semibold mt-1">
+                      Max file size: 10MB (PDF files only)
+                    </p>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Loader2, ClipboardList, CheckCircle, XCircle } from 'lucide-react';
+import { Loader2, ClipboardList, CheckCircle, XCircle, FileText } from 'lucide-react';
 import api from '../../api/axios';
 import useSocket from '../../hooks/useSocket';
 
@@ -8,6 +8,20 @@ const ApprovalRequests = () => {
   const [loading, setLoading] = useState(true);
   const [processingId, setProcessingId] = useState(null);
   const socket = useSocket();
+
+  const handleViewPdf = async (requestId) => {
+    try {
+      const response = await api.get(`/requests/${requestId}/pdf`, {
+        responseType: 'blob'
+      });
+      const blob = new Blob([response.data], { type: 'application/pdf' });
+      const url = window.URL.createObjectURL(blob);
+      window.open(url, '_blank');
+    } catch (error) {
+      console.error('Error downloading pdf:', error);
+      alert('Failed to view PDF');
+    }
+  };
 
   const fetchRequests = useCallback(async () => {
     try {
@@ -93,6 +107,15 @@ const ApprovalRequests = () => {
                           <p className="text-sm text-slate-400">{req.payload.description}</p>
                           {req.payload.batch && (
                             <p className="text-xs text-blue-400 mt-2 font-medium">Target: {req.payload.batch}</p>
+                          )}
+                          {req.pdfMimeType && (
+                            <button
+                              onClick={() => handleViewPdf(req._id)}
+                              className="mt-3 flex items-center text-xs font-bold text-blue-400 bg-blue-500/10 hover:bg-blue-500/20 px-3 py-1.5 rounded-lg transition-colors cursor-pointer"
+                            >
+                              <FileText size={14} className="mr-1.5" />
+                              View PDF: {req.pdfOriginalName || 'document.pdf'}
+                            </button>
                           )}
                         </>
                       ) : (
